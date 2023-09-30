@@ -1,8 +1,11 @@
 import {BranchScrapper} from './branch.js';
+import {ProductScrapper} from './product.js';
 
 async function main() {
-	const scrapper = new BranchScrapper();
-	const branches = await scrapper.getBranches();
+	const branchScrapper = new BranchScrapper();
+	const branches = await branchScrapper.getBranches();
+	const productScrapper = new ProductScrapper();
+	const products = await productScrapper.getProducts();
 }
 
 main()
