@@ -1,0 +1,20 @@
+{
+    "headers": {
+        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/117.0",
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Encoding":"gzip, deflate, br",
+        "Accept-Language": "en-US,en;q=0.5",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "cross-site",
+        "Origin":"https://www.preciosclaros.gob.ar",
+        "DNT":"1",
+        "Connection":"keep-alive",
+        "Referer":"https://www.preciosclaros.gob.ar/",
+        "Sec-Fetch-Dest":"empty",
+        "Sec-Fetch-Mode":"cors",
+        "Sec-Fetch-Site":"cross-site",
+        "x-api-key": "zIgFou7Gta7g87VFGL9dZ4BEEs19gNYS1SOQZt96",
+        "TE":"trailers"
+    }
+}

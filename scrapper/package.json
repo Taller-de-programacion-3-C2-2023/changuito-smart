@@ -1,0 +1,29 @@
+{
+  "name": "changuito-smart",
+  "version": "1.0.0",
+  "description": "Changuito Smart",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Taller-de-programacion-3-C2-2023/changuito-smart.git"
+  },
+  "keywords": [
+    "price-scrapper",
+    "inflacion",
+    "argentina"
+  ],
+  "author": "Bibiloni Ayelén, Lafroce Matías",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Taller-de-programacion-3-C2-2023/changuito-smart/issues"
+  },
+  "homepage": "https://github.com/Taller-de-programacion-3-C2-2023/changuito-smart#readme",
+  "dependencies": {
+    "axios": "^1.5.1",
+    "fs": "0.0.1-security"
+  },
+  "type": "module"
+}
