@@ -10,11 +10,17 @@ const URL="https://d3e6htiiul5ek9.cloudfront.net/prod/productos?limit=100"
 export class ProductScrapper {
 	async getProducts() {
 		const scrapper = new BranchScrapper();
-		const branches = await scrapper.getBranches();
-		const idSucursales = branches.map(b => b.id);
-		const promises = idSucursales.map(id => this.getProductsForSucursal(id));
-		const resolved = await Promise.all(promises);
-		const products = resolved.flat();
+		try {
+			const branches = await scrapper.getBranches();
+		} catch (e) {
+			console.log("Failed to query branches");
+			return;
+		}
+		const branchesId = branches.map(b => b.id);
+		for (const id of branchesId) {
+			const branchProducts = this.getProductsForSucursal(id);
+			products = products.append(branchProducts);
+		}
 		return products;
 	}
 
@@ -31,12 +37,16 @@ export class ProductScrapper {
 
 		const promises = [];
 		for (let offset = pageLimit; offset < total; offset += pageLimit) {
-			const curUrl = URL + "&offset=" + offset
-			promises.push(axios.get(curUrl, headers));
+			const curUrl = URL + "&offset=" + offset;
+			try {
+				promises.push(axios.get(curUrl, headers));
+			} catch (e) {
+				console.log("Failed at ", offset);
+			}
 		}
 
-		const resolved = await Promise.all(promises);
+		const resolved = Promise.all(promises);
 		const products = resolved.map(response => response.data.productos).flat();
-		return {"sucursal": idSucursal, "productos": firstProducts.concat(products)};
+		return {"sucursal": idSucursal, "productos": firstProducts.concat(products), status: "success"};
 	}
 }
