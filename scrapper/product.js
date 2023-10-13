@@ -7,6 +7,7 @@ const headers = JSON.parse(raw_headers);
 
 const URL="https://d3e6htiiul5ek9.cloudfront.net/prod/productos?limit=100"
 
+
 export class ProductScrapper {
 	constructor(db) {
 		this.db = db;
@@ -25,14 +26,20 @@ export class ProductScrapper {
 		let products = [];
 		for (const id of branchesId) {
 			try {
-				const branchProducts = this.getProductsForSucursal(id);
-				products = products.append(branchProducts);
+				const branchProducts = await this.getProductsForSucursal(id);
+				await this.saveProducts(branchProducts);
+				products.push(branchProducts);
 			} catch (e) {
-				console.info("Last parsed:", id)
-				return products;
+				console.info("Failed while scrapping branch with id", id, e)
+				return {success: false, lastId: id};
 			}
 		}
-		return products;
+		return {success: true, products: products};
+	}
+
+	async saveProducts(branchProducts) {
+		const productsCol = this.db.collection("products");
+	    return productsCol.insertOne(branchProducts);
 	}
 
 	async getProductsForSucursal(idSucursal) {
@@ -48,12 +55,12 @@ export class ProductScrapper {
 
 		const promises = [];
 		for (let offset = pageLimit; offset < total; offset += pageLimit) {
-			const curUrl = URL + "&offset=" + offset;
+			const curUrl = curUrlBase + "&offset=" + offset;
 			promises.push(axios.get(curUrl, headers));
 		}
 
-		const resolved = Promise.all(promises);
+		const resolved = await Promise.all(promises);
 		const products = resolved.map(response => response.data.productos).flat();
-		return {"sucursal": idSucursal, "productos": firstProducts.concat(products), status: "success"};
+		return {sucursal: idSucursal, productos: firstProducts.concat(products), status: "success"};
 	}
 }

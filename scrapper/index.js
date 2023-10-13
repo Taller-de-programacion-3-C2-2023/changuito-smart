@@ -25,6 +25,11 @@ async function main() {
 
         const productScrapper = new ProductScrapper(db);
         const products = await productScrapper.getProducts();
+        if (products.success) {
+            console.info("Product scrapping finished");
+        } else {
+            console.warn("Scrapping interrupted at branch %s", products.lastId);
+        }
         const data = await statusCol.find().toArray();
     } catch (e) {
         console.error("Scrapper finished with error:", e);
