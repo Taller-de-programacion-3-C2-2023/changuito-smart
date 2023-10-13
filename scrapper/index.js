@@ -14,24 +14,20 @@ async function main() {
         await client.connect();
         const db = client.db("scrapper");
 
-        const branchScrapper = new BranchScrapper(db);
-        console.log("Getting branches...");
-        const branches = await branchScrapper.getBranches();
-
-        console.log(branches);
-        console.log(branches.slice(0,2));
-
-        const productScrapper = new ProductScrapper();
-        //const products = await productScrapper.getProducts();
         const statusCol = db.collection("status");
-        const data = await statusCol.find().toArray();
         const query = { };
         const update = { $set: { status: "Started" }};
         const options = { upsert: true };
         await statusCol.updateOne(query, update, options);
-        console.log("Data: ", data);
+
+        const branchScrapper = new BranchScrapper(db);
+        const branches = await branchScrapper.getBranches();
+
+        const productScrapper = new ProductScrapper(db);
+        const products = await productScrapper.getProducts();
+        const data = await statusCol.find().toArray();
     } catch (e) {
-        console.error(e);
+        console.error("Scrapper finished with error:", e);
     } finally {
         await client.close();
     }

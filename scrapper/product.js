@@ -8,18 +8,29 @@ const headers = JSON.parse(raw_headers);
 const URL="https://d3e6htiiul5ek9.cloudfront.net/prod/productos?limit=100"
 
 export class ProductScrapper {
+	constructor(db) {
+		this.db = db;
+	}
+
 	async getProducts() {
-		const scrapper = new BranchScrapper();
+		const scrapper = new BranchScrapper(this.db);
+		let branches;
 		try {
-			const branches = await scrapper.getBranches();
+			branches = await scrapper.getBranches();
 		} catch (e) {
-			console.log("Failed to query branches");
+			console.log("Failed to query branches: ", e);
 			return;
 		}
 		const branchesId = branches.map(b => b.id);
+		let products = [];
 		for (const id of branchesId) {
-			const branchProducts = this.getProductsForSucursal(id);
-			products = products.append(branchProducts);
+			try {
+				const branchProducts = this.getProductsForSucursal(id);
+				products = products.append(branchProducts);
+			} catch (e) {
+				console.info("Last parsed:", id)
+				return products;
+			}
 		}
 		return products;
 	}
@@ -38,11 +49,7 @@ export class ProductScrapper {
 		const promises = [];
 		for (let offset = pageLimit; offset < total; offset += pageLimit) {
 			const curUrl = URL + "&offset=" + offset;
-			try {
-				promises.push(axios.get(curUrl, headers));
-			} catch (e) {
-				console.log("Failed at ", offset);
-			}
+			promises.push(axios.get(curUrl, headers));
 		}
 
 		const resolved = Promise.all(promises);

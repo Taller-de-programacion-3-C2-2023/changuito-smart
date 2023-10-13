@@ -23,7 +23,7 @@ export class BranchScrapper {
 		}
 
 		console.log("DB count: ", dbCount, "Remote Count:", remoteCount)
-		if (dbCount != 0) {
+		if (dbCount == 0) {
 			const branches = await this.getRemoteBranches();
 			console.log("Adding ", branches.length, " branches");
 			await branchCol.deleteMany({});
@@ -31,7 +31,7 @@ export class BranchScrapper {
 			return branches
 		} else {
 			console.log("Branches already exist");
-			return getLocalBranches(branchCol);
+			return this.getLocalBranches(branchCol);
 		}
 	}
 
@@ -56,7 +56,7 @@ export class BranchScrapper {
 			promises.push(axios.get(curUrl, headers));
 		}
 
-		const resolved = await Promise.all(promises);
+		const resolved = await Promise.any(promises);
 		const branches = resolved.map(response => response.data.sucursales).flat();
 		return firstBranches.concat(branches);
 	}
