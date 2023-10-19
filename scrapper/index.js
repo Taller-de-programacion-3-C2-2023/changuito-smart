@@ -20,9 +20,6 @@ async function main() {
         const options = { upsert: true };
         await statusCol.updateOne(query, update, options);
 
-        const branchScrapper = new BranchScrapper(db);
-        const branches = await branchScrapper.getBranches();
-
         const productScrapper = new ProductScrapper(db);
         const products = await productScrapper.getProducts();
         if (products.success) {
@@ -30,7 +27,6 @@ async function main() {
         } else {
             console.warn("Scrapping interrupted at branch %s", products.lastId);
         }
-        const data = await statusCol.find().toArray();
     } catch (e) {
         console.error("Scrapper finished with error:", e);
     } finally {
