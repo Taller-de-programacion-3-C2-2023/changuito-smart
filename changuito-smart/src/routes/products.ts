@@ -4,11 +4,10 @@ export const getProducts = (dependencies: any) => {
   const { repository } = dependencies
   const modelName = 'product'
   const handler = async (request: FastifyRequest, reply: FastifyReply) => {
-    const ins = await repository.create({ modelName })
-    console.log(' inset habler productos ', ins)
+    // const ins = await repository.create({ modelName })
+    // console.log(' inset hbler   proaaaductos proaaaductosproaaaductosproaaaductosproaaaductosproaaaductosproaaaductos ')
     const result = await repository.get({ modelName, filter: {} })
-    console.log(' get habler productos ', result)
-    return { product: 'producto' }
+    return { product: result }
   }
   return handler
 }

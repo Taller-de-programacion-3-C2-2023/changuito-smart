@@ -1,6 +1,6 @@
-    FROM node:alpine
-    WORKDIR /changuito-smart
-    COPY . .
-    RUN npm install
-    RUN npm run build
-    CMD ["node", "./dist/server.js"]
+FROM node:alpine
+RUN npm install pm2 -g
+WORKDIR /changuito-smart
+COPY . .
+RUN npm install && npm run build
+CMD [ "pm2-runtime", "npm", "--", "start" ]
