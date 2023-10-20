@@ -13,13 +13,15 @@ const main = async () => {
       ignoreDuplicateSlashes: true,
     })
 
-    const address = server.listen({ port, host }, (err, _address) => {
+    server.listen({ port, host }, (err, address) => {
       if (err) {
         console.log(err)
         process.exit(1)
       }
+      console.log(`Listening on ${address}`)
+      console.log(server.printRoutes())
     })
-    console.log(`Listening on ${address}`)
+
     const exitHandler = terminate(server, { coredump: false, timeout: 500 })
     process.on('unhandledRejection', exitHandler(1, 'Unhandled Promise'))
     process.on('uncaughtException', exitHandler(1, 'Unexpected Error'))
