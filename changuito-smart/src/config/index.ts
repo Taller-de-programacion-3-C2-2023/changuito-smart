@@ -5,4 +5,5 @@ export const appConfig = {
 
 export const mongoConfig = {
   url: 'mongodb://changuito:smart@localhost:27017/',
+  forceClose: true,
 }

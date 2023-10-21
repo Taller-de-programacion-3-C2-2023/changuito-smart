@@ -1,23 +1,33 @@
-import { mockedProducts } from './mockDB'
+class MongoRepository {
+  private dbClient: any
+  private dbName: string
+  private collectionName: string
+  private collection: any
 
-const collectionFind = (conn) => async (params: { modelName: string; filter?: any }) => {
-  const { modelName, filter } = params
-  const repository = await conn.db('db-changuito')
-  const collection = repository.collection(modelName)
-  const findResult = await collection.find({ nombre: /ocio/ }).toArray()
-  return findResult
+  constructor(dbClient: any, dbName: string, collectionName: string) {
+    this.dbClient = dbClient
+    this.dbName = dbName
+    this.collectionName = collectionName
+    this.collection = this.dbClient.db(this.dbName).collection(this.collectionName)
+  }
+
+  protected async find(filter: any = {}): Promise<any> {
+    return await this.collection.find(filter).toArray()
+  }
+
+  protected async insert(documents: Array<any>): Promise<any> {
+    return await this.collection.insertMany(documents)
+  }
 }
 
-const collectionInsert = (conn) => async (params: { modelName: string }) => {
-  const { modelName } = params
-  const repository = await conn.db('db-changuito')
-  const collection = repository.collection(modelName)
-  const insertResult = await collection.insertMany(mockedProducts)
-  // console.log('Found documents =>', insertResult)
-  return insertResult
-}
+export class ProductRepository extends MongoRepository {
+  constructor(dbClient: any) {
+    super(dbClient, 'db-changuito', 'products')
+  }
 
-export default {
-  collectionFind,
-  collectionInsert,
+  public async findByName(name: string) {
+    const filter = { nombre: { $regex: `${name}`, $options: 'si' } }
+    const result = await this.find(filter)
+    return result
+  }
 }

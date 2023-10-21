@@ -1,11 +1,5 @@
-import mongoRepository from './mongoRepository'
+import { ProductRepository } from './mongoRepository'
 
-export interface IRepository {
-  get: (entity) => Promise<any>
-  //   insert: (entity) => Promise<void>
-}
-
-export const repository = (dbConnection: any) => ({
-  get: mongoRepository.collectionFind(dbConnection),
-  create: mongoRepository.collectionInsert(dbConnection),
+export const Repositories = (dbConnection: any) => ({
+  product: new ProductRepository(dbConnection),
 })
