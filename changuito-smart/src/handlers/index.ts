@@ -1,3 +1,5 @@
-import { getProducts } from './products'
+import { ProductHandler } from './products'
 
-export default { getProducts }
+export default {
+  ProductHandler,
+}

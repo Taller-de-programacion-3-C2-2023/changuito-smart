@@ -1,11 +1,16 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 
-export const getProducts = (dependencies: any) => {
-  const { repository } = dependencies
-  const modelName = 'products'
-  const handler = async (request: FastifyRequest, reply: FastifyReply) => {
-    const result = await repository.get({ modelName, filter: {} })
-    return { product: result }
+export const ProductHandler = (dependencies: any) => {
+  const { product: productRepository } = dependencies
+
+  const getProducts = async (request: FastifyRequest, reply: FastifyReply) => {
+    //@ts-ignore
+    const { name } = request.query
+    const result = await productRepository.findByName(name)
+    return result
   }
-  return handler
+
+  return {
+    get: getProducts,
+  }
 }
