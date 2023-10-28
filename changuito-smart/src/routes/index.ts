@@ -1,8 +1,9 @@
-import { getProductsSchema } from './schemas'
+import { getBranchesSchema, getProductsSchema } from './schemas'
 import handlers from '../handlers'
 
 export const routes = async (app, _opts) => {
   const { Repositories } = app
+  const { get: branchesGetHandler } = handlers.BranchHandler(Repositories)
   const { get: getHandler } = handlers.ProductHandler(Repositories)
 
   app.route({
@@ -10,5 +11,12 @@ export const routes = async (app, _opts) => {
     method: 'GET',
     schema: getProductsSchema,
     handler: getHandler,
+  })
+
+  app.route({
+    url: '/branches',
+    method: 'GET',
+    schema: getBranchesSchema,
+    handler: branchesGetHandler,
   })
 }
