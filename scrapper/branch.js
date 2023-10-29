@@ -28,6 +28,7 @@ export class BranchScrapper {
             console.log("Adding ", branches.length, " branches");
             await branchCol.deleteMany({});
             await branchCol.insertMany(branches);
+            await branchCol.createIndex( { location : "2dsphere" } )
             return branches
         } else {
             console.log("Branches already exist");
@@ -58,6 +59,17 @@ export class BranchScrapper {
 
         const resolved = await Promise.all(promises);
         const branches = resolved.map(response => response.data.sucursales).flat();
-        return firstBranches.concat(branches);
+        const remoteBranches = firstBranches.concat(branches);
+        remoteBranches.forEach(fixBranchLocation);
+        return remoteBranches
     }
+}
+
+function fixBranchLocation(branch) {
+    branch.location = {
+        type: "Point",
+        coordinates: [Number(branch.lng), Number(branch.lat)]
+    };
+    delete(branch.lat);
+    delete(branch.lng);
 }

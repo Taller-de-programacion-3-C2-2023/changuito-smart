@@ -16,3 +16,15 @@ export const getProductsSchema = {
   //   },
   // },
 }
+
+export const getBranchesSchema = {
+  querystring: {
+    type: 'object',
+    properties: {
+      sucursalNombre: { type: 'string' },
+      lat: { type: 'number' },
+      lng: { type: 'number' },
+    },
+    required: [],
+  },
+}

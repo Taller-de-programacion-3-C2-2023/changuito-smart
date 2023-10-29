@@ -1,4 +1,4 @@
-class MongoRepository {
+export class MongoRepository {
   private dbClient: any
   private dbName: string
   private collectionName: string
@@ -18,16 +18,8 @@ class MongoRepository {
   protected async insert(documents: Array<any>): Promise<any> {
     return await this.collection.insertMany(documents)
   }
-}
 
-export class ProductRepository extends MongoRepository {
-  constructor(dbClient: any) {
-    super(dbClient, 'db-changuito', 'products')
-  }
-
-  public async findByName(name: string) {
-    const filter = { nombre: { $regex: `${name}`, $options: 'si' } }
-    const result = await this.find(filter)
-    return result
+  protected async aggregate(pipeline: Array<any>): Promise<any> {
+    return await this.collection.aggregate(pipeline).toArray()
   }
 }
