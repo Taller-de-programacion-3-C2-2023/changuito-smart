@@ -1,0 +1,125 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.App {
+  text-align: center;
+  background-color: #282c34;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #f68f8f;
+  min-height: 15vh;
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: rgb(54, 52, 52);
+}
+
+
+.App-page {
+  /* background-color: #28  2c34; */
+  display: flex;
+  flex-direction: column;
+  /* height: 900vh; */
+  min-height: 80vh;
+  width: 100vw;
+  /* align-items: center;
+  justify-content: center; */
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.Nav-bar{
+  background-color: #e39760;
+  color: #b2d5df;
+}
+
+
+.Column-left{
+  background-color: #7d9ee0;
+  display: flex;
+  flex-direction: column;
+  /* height: 900vh; */
+  min-height: 50vh;
+  width: 30%;
+  align-items: baseline;
+  justify-content: center;
+  font-size: medium;
+  color: white;
+}
+
+
+.Column-rigth{
+  background-color: #4e82ec;
+  display: flex;
+  flex-direction: column;
+  /* height: 900vh; */
+  min-height: 50vh;
+  width: 70%;
+  align-items: baseline;
+  justify-content: center;
+  color: rgb(71, 18, 18);
+}
+
+
+
+.Item-list{
+  background-color: #1d3d7c;
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  justify-content: center;
+  color: rgb(223, 151, 151);
+  font-size: small;
+}
+
+.Page-filter{
+  background-color: #1d3d7c;
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  justify-content: center;
+  color: rgb(223, 151, 151);
+  font-size: small;
+}
+
+.Page-filter{
+  background-color: #58460a;
+  height: max-content;
+  /* min-height: 60vh; */
+  width: max-content;
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  justify-content: center;
+  color: rgb(223, 151, 151);
+  font-size: small;
+}
