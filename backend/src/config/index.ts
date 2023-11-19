@@ -1,6 +1,6 @@
 export const appConfig = {
   port: +process.env.APP_PORT, // || 3030,
-  host: process.env.APP_IP, // || '127.0.0.1',
+  host: "0.0.0.0", // || '127.0.0.1',
 }
 
 export const corsConfig = (_instance?) => (req, callback) => {
@@ -16,8 +16,12 @@ export const corsConfig = (_instance?) => (req, callback) => {
   callback(null, corsOptions)
 }
 
+const mongoHost = process.env.MONGO_HOST;
+const mongoUsername = process.env.MONGO_USERNAME;
+const mongoPassword = process.env.MONGO_PASSWORD;
+
 export const mongoConfig = {
-  url: 'mongodb://changuito:smart@localhost:27017/',
+  url: `mongodb://${mongoUsername}:${mongoPassword}@${mongoHost}:27017/`,
   forceClose: true,
 }
 

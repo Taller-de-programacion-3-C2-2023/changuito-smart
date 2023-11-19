@@ -10,9 +10,9 @@ export default function ProductSelector(props) {
   useEffect(
     function effectFunction() {
       async function fetchOptions() {
-        const endpount = `http://localhost:3030/products`;
+        const endpoint = `/api/products`;
         const queryString = `name=${productSearched}`;
-        const response = await fetch(`${endpount}?${queryString}`);
+        const response = await fetch(`${endpoint}?${queryString}`);
         const json = await response.json();
         console.log("OK: Fetching response: ", json);
         setProductsList(json);
