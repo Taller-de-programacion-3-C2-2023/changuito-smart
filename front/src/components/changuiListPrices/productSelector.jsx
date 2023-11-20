@@ -57,7 +57,7 @@ export default function ProductSelector(props) {
               className="Selector-options"
               key={item.id}
               value={item.id}
-              label={item.nombre}
+              label={item.name}
             />
           ))}
         </select>

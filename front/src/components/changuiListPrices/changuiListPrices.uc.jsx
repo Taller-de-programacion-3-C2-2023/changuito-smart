@@ -2,34 +2,16 @@ import "../../styles/App.css";
 import React, { useState } from "react";
 import ProductSelector from "./productSelector";
 import ProductCheckList from "./productCheckList";
+import BranchPricesTable from "./branchesPricesTable";
 import ColumnedContent from "../Columns";
-import logo from "../../logo.svg";
-import DataTable from "react-data-table-component";
 
 export default function UseCaseList(props) {
   // const [lastProductSelected, setLastProductSelected] = useState(undefined);
   const [selectedProductList, setSelectdProductsList] = useState([]);
-  const [pending, setPending] = React.useState(true);
 
   function addSelectedProduct(productSelected) {
     setSelectdProductsList(selectedProductList.concat(productSelected));
-    setPending(false);
   }
-
-  const columns = [
-    {
-      name: "Name",
-      selector: (row) => row.nombre,
-    },
-    {
-      name: "Min price",
-      selector: (row) => row.precioMax,
-    },
-    {
-      name: "Max price",
-      selector: (row) => row.precioMin,
-    },
-  ];
 
   return (
     <>
@@ -42,7 +24,8 @@ export default function UseCaseList(props) {
           <ProductCheckList products={selectedProductList}></ProductCheckList>
         </div>
 
-        <div className="Page-content">
+        <BranchPricesTable selectedProductList={selectedProductList} />
+        {/* <div className="Page-content">
           <h3> Results with {selectedProductList.length} products selected</h3>
           <DataTable
             title="Products"
@@ -56,7 +39,7 @@ export default function UseCaseList(props) {
             highlightOnHover
             pointerOnHover
           />
-        </div>
+        </div> */}
       </ColumnedContent>
     </>
   );

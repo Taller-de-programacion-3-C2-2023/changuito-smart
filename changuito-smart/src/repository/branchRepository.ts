@@ -1,11 +1,12 @@
+import { paginationDefaults } from './../config/index'
 import { MongoRepository } from './mongoRepository'
 
 export default class BranchRepository extends MongoRepository {
   constructor(dbClient: any) {
-    super(dbClient, 'scrapper', 'branches')
+    super(dbClient, 'db-changuito', 'branches')
   }
 
-  public async findByLocation(lon: number, lat: number) {
+  public async findByLocation(lon: number, lat: number, pagination?: { limit: number; offset: number }) {
     console.log(`[${lon}, ${lat}]`)
     const pipeline = [
       {
@@ -16,6 +17,8 @@ export default class BranchRepository extends MongoRepository {
           spherical: true,
         },
       },
+      { $skip: pagination?.offset },
+      { $limit: pagination?.limit },
     ]
     const result = await this.aggregate(pipeline)
     return result
