@@ -6,7 +6,7 @@ export default class ProductRepository extends MongoRepository {
   }
 
   public async findByName(name: string) {
-    const filter = { nombre: { $regex: `${name}`, $options: 'si' } }
+    const filter = { name: { $regex: `${name}`, $options: 'si' } }
     const result = await this.find(filter)
     return result
   }

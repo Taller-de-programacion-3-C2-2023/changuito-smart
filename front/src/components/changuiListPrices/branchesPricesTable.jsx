@@ -35,16 +35,20 @@ export default function BranchPricesTable(props) {
 
   const columns = [
     {
-      name: "_id",
-      selector: (row) => row.price,
+      name: "Sucursal",
+      selector: (row) => row.branch.sucursalNombre,
     },
-    // {
-    //   name: "branchId",
-    //   selector: (row) => row.branchId,
-    // },
     {
-      name: "cartPrice",
-      selector: (row) => row.productId,
+      name: "Direccion",
+      selector: (row) => row.branch.direccion,
+    },
+    {
+      name: "Localidad",
+      selector: (row) => row.branch.localidad,
+    },
+    {
+      name: "Precio",
+      selector: (row) => row.cartPrice,
     },
   ];
 
