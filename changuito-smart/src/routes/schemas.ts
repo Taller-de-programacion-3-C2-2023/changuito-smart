@@ -23,6 +23,7 @@ export const getPricesSchema = {
     properties: {
       products: { type: 'array', default: [], items: { type: 'string' } },
       branches: { type: 'array', items: { type: 'string' } },
+      date: { type: 'string' },
       offset: { type: 'number' },
       limit: { type: 'number' },
     },

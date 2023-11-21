@@ -15,7 +15,26 @@ export default class PriceRepository extends MongoRepository {
   // TODO ver que pasa si no se manda filtro
   public async findByCart(filter: { products?: string[]; branches?: string[] }) {
     const { products, branches } = filter
-    const result = await this.find({ productId: { $in: products }, branchId: { $in: branches } })
+    const pipeline = [
+      {
+        $match: {
+          productId: { $in: products },
+          branchId: { $in: branches },
+        },
+      },
+      {
+        $group: {
+          _id: '$branchId',
+          cartPrice: { $sum: '$price' },
+          cartLength: { $count: {} },
+          cartProducts: { $push: '$productId' },
+        },
+      },
+      // TODO
+      // { $skip: pagination?.offset },
+      // { $limit: pagination?.limit },
+    ]
+    const result = await this.aggregate(pipeline)
     return result
   }
 }

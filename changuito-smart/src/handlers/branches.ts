@@ -7,6 +7,7 @@ export const BranchHandler = (dependencies: any) => {
   const getBranches = async (request: FastifyRequest, reply: FastifyReply) => {
     //@ts-ignore
     const { lon, lat, offset, limit } = request.query
+    // si el offset o el limit no se envian se toman los valores por defaut
     const pagination = { ...paginationDefaults, ...(offset && { offset }), ...(limit && { limit }) }
 
     const result = await branchRepository.findByLocation(lon, lat, pagination)

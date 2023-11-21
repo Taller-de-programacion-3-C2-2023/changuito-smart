@@ -11,7 +11,7 @@ async function main() {
     await client.connect()
     const db = client.db(MONGO.DB)
 
-    const statusCol = db.collection('status')
+    const statusCol = db.collection(MONGO.COLLECTION.STATUS)
     const query = {}
     const update = { $set: { status: 'Started' } }
     const options = { upsert: true }

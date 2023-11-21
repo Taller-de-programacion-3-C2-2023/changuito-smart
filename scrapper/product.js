@@ -36,7 +36,7 @@ export class ProductScrapper {
   }
 
   async saveProducts(branchProducts) {
-    const productsCol = this.db.collection('products')
+    const productsCol = this.db.collection(MONGO.COLLECTION.PRODUCTS)
     return productsCol.insertOne(branchProducts)
   }
 
@@ -84,12 +84,12 @@ export class ProductScrapper {
         brand: prod.marca,
       },
     }))
-    const pricesCollection = this.db.collection('prices')
+    const pricesCollection = this.db.collection(MONGO.COLLECTION.PRICES)
     const prices = mapped.map((x) => x.prices)
     const result = await pricesCollection.insertMany(prices)
     console.log(`insertados ${prices.length} precios`)
 
-    const productCollection = this.db.collection('products')
+    const productCollection = this.db.collection(MONGO.COLLECTION.PRODUCTS)
     const productsData = mapped.map((x) => x.product)
     const options = { ordered: false }
     const productsDataInserts = await productCollection.insertMany(productsData, options)

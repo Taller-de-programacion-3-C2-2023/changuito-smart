@@ -1,4 +1,3 @@
-import { paginationDefaults } from './../config/index'
 import { MongoRepository } from './mongoRepository'
 
 export default class BranchRepository extends MongoRepository {
