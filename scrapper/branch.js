@@ -5,7 +5,7 @@ import { SCRAP, MONGO } from './configs.js'
 const raw_headers = fs.readFileSync('scrapper-headers.json')
 const headers = JSON.parse(raw_headers)
 
-const URL = `${SCRAP.URL_BASE}${SCRAP.BRANCHE_ENDPOINT}`
+const URL = `${SCRAP.URL_BASE}${SCRAP.BRANCH_ENDPOINT}`
 
 export class BranchScrapper {
   constructor(db) {

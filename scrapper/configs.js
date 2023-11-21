@@ -2,7 +2,7 @@ export const URL_SCRAP = process.env.URL_SCRAP || 'https://d3e6htiiul5ek9.cloudf
 export const SCRAP = {
   URL_BASE: 'https://d3e6htiiul5ek9.cloudfront.net/prod',
   PRODUCT_ENDPOINT: '/productos?limit=100',
-  BRANCHE_ENDPOINT: '/sucursales?limit=30',
+  BRANCH_ENDPOINT: '/sucursales?limit=30',
 }
 
 export const MONGO = {

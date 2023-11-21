@@ -13,7 +13,6 @@ export const CartHandler = (dependencies: any) => {
 
     const branches = await branchRepository.findByLocation(lon, lat, pagination)
     const branchesId = branches.map((x) => x.id)
-    console.log(branchesId)
     const result = await priceRepository.findByCart({ products, branches: branchesId })
     return result
   }
