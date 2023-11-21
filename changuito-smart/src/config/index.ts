@@ -20,3 +20,7 @@ export const mongoConfig = {
   url: 'mongodb://changuito:smart@localhost:27017/',
   forceClose: true,
 }
+
+export const paginationDefaults = { offset: 0, limit: 20 }
+
+export const locationDefault = { lat: -34.6109, lon: -58.3776 }

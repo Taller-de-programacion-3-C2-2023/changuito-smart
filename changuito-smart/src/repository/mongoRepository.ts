@@ -11,8 +11,9 @@ export class MongoRepository {
     this.collection = this.dbClient.db(this.dbName).collection(this.collectionName)
   }
 
-  protected async find(filter: any = {}): Promise<any> {
-    return await this.collection.find(filter).toArray()
+  protected async find(filter: any = {}, pagination?: { limit: number; offset: number; sort?: any }): Promise<any> {
+    const { limit, offset: skip, sort } = pagination || {}
+    return await this.collection.find(filter, { sort, limit, skip }).toArray()
   }
 
   protected async insert(documents: Array<any>): Promise<any> {
