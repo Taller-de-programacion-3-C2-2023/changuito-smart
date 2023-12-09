@@ -32,3 +32,41 @@ Recomendamos usar mongo-express agregando la siguiente entrada a los servicios d
 ```
 
 El usuario (changuito) y contraseña (smart) deben ser los mismos que los que se usan en la base de datos.
+
+## Certificados de nginx
+
+Instalar certbot
+
+```
+snap install certbot --classic
+```
+
+Ejecutar 
+```
+certbot certonly -a manual --config-dir=/tmp --work-dir=/tmp --logs-dir=/tmp
+```
+
+Se inicia el challenge donde debemos crear un archivo en el servidor
+
+En el servidor *changuito-server* ejecutar
+
+``` 
+docker exec -it changuito-smart_frontend_1 bash
+```
+
+Ejecutar, reemplaando el texto y nombre de archivo:
+
+```
+mkdir -p /usr/share/nginx/html/.well-known/acme-challenge/
+echo <texto del challenge> > /usr/share/nginx/html/.well-known/acme-challenge/<nombre archivo>
+```
+
+Copiar los archivos generados al servidor host
+
+```
+scp -r /tmp/live/changuito.mlafroce.ar changuito@changuito.mlafroce.ar:~/changuito-smart/ssl
+```
+
+## MongoDB remoto
+
+ssh changuito@changuito-server -L 27017:172.19.0.2:27017
