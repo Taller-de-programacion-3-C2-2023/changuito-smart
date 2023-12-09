@@ -2,29 +2,34 @@ import "../../styles/App.css";
 import React, { useState } from "react";
 import ProductSelector from "./productSelector";
 import ProductCheckList from "./productCheckList";
-import BranchPricesTable from "./branchesPricesTable";
-import ColumnedContent from "../Columns";
+import CartFilters from "./cartFilters";
+import BranchPricesTable from "./cartBranches";
+import ColumnedContent from "../columnedContents";
 
 export default function UseCaseList(props) {
   // const [lastProductSelected, setLastProductSelected] = useState(undefined);
-  const [selectedProductList, setSelectdProductsList] = useState([]);
+  const [cartProducts, setCartProducts] = useState([]);
 
   function addSelectedProduct(productSelected) {
-    setSelectdProductsList(selectedProductList.concat(productSelected));
+    setCartProducts(cartProducts.concat(productSelected));
   }
 
   return (
-    <>
+    <div>
       <ColumnedContent>
-        <div className="Page-filters">
-          <ProductSelector
+        <>
+          <CartFilters
+            onSelected={addSelectedProduct}
+            cartProducts={cartProducts}
+          ></CartFilters>
+          {/* <ProductSelector
             selectedProductList={selectedProductList}
             onSelected={addSelectedProduct}
-          />
-          <ProductCheckList products={selectedProductList}></ProductCheckList>
-        </div>
+          /> */}
+          {/* <ProductCheckList products={cartProducts}></ProductCheckList> */}
+        </>
 
-        <BranchPricesTable selectedProductList={selectedProductList} />
+        <BranchPricesTable selectedProductList={cartProducts} />
         {/* <div className="Page-content">
           <h3> Results with {selectedProductList.length} products selected</h3>
           <DataTable
@@ -41,6 +46,6 @@ export default function UseCaseList(props) {
           />
         </div> */}
       </ColumnedContent>
-    </>
+    </div>
   );
 }

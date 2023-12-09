@@ -1,19 +1,23 @@
-import "./styles/App.css";
-import MainPage from "./components/mainPage";
-import PageContent from "./components/pageContent";
-import BranchMap from "./components/branchMap";
+// import "./styles/App.css";
 
-import UseCaseList from "./components/changuiListPrices/changuiListPrices.uc";
+import "./styles/Page.css";
+import { PrimeReactProvider, PrimeReactContext } from "primereact/api";
+import BranchMap from "./components/branchMap";
+import UseCaseList from "./components/changuiListPrices/cartPrices.uc";
+import Header from "./components/pageHeader";
+import Footer from "./components/pageFooter";
+import Main from "./components/pageMain";
+
 function App() {
   return (
-    <div className="App">
-      <MainPage pageName="[LOGO] ChanguitoSmart">
-        <PageContent>
-          <UseCaseList />
-          <BranchMap />
-        </PageContent>
-      </MainPage>
+    // <PrimeReactProvider>
+    <div className="Page">
+      <Header />
+      {/* <UseCaseList /> */}
+      <Main />
+      <Footer />
     </div>
+    // </PrimeReactProvider>
   );
 }
 
