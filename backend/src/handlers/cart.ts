@@ -12,9 +12,9 @@ export const CartHandler = (dependencies: any) => {
     const pagination = { ...paginationDefaults, ...(offset && { offset }), ...(limit && { limit }) }
 
     const branches = await branchRepository.findByLocation(lon, lat, pagination)
-    const branchesId = branches.map((x) => x.id)
-    const result = await priceRepository.findByCart({ products, branches: branchesId })
-    return result
+    const branchesById = branches.reduce((acc, curr) => ({ ...acc, [curr.id]: curr }), {})
+    const result = await priceRepository.findByCart({ products, branches: Object.keys(branchesById) })
+    return result.map((x) => ({ ...x, branch: branchesById[x._id] }))
   }
 
   return {
