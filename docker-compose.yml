@@ -1,0 +1,27 @@
+version: '3.1'
+
+services:
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+
+  backend:
+    build:
+      context: backend
+    expose:
+      - "3030"
+    depends_on:
+      - mongo
+
+  frontend:
+    build:
+      context: front
+    ports:
+      - "8080:80"
+    environment:
+      REACT_APP_BACKEND_HOST: "backend:8080"
+    depends_on:
+      - backend

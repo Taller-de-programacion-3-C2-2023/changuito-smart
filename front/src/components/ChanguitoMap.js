@@ -1,7 +1,7 @@
 import * as L from 'leaflet';
-      
+
 async function getBranches(lat, lon) {
-  const url = `http://127.0.0.1:3030/branches?lat=${lat}&lon=${lon}`;
+  const url = `/api/branches?lat=${lat}&lon=${lon}`;
   return fetch(url);
 }
 
