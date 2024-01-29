@@ -5,9 +5,9 @@ export default class ProductRepository extends MongoRepository {
     super(dbClient, 'db-changuito', 'products')
   }
 
-  public async findByName(name: string) {
+  public async findByName(name: string, pagination?: { limit: number; offset: number; sort?: any }) {
     const filter = { name: { $regex: `${name}`, $options: 'si' } }
-    const result = await this.find(filter)
+    const result = await this.find(filter, pagination)
     return result
   }
 }
