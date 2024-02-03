@@ -2,6 +2,7 @@ import {
   getBranchesSchema,
   getCartSchema,
   getPricesSchema,
+  getPriceRecordsSchema,
   getProductsSchema,
   postBranchesSearchSchema,
 } from './schemas'
@@ -12,6 +13,7 @@ export const routes = async (app, _opts) => {
   const { get: branchesGetHandler, postSearch: postSearch } = handlers.BranchHandler(Repositories)
   const { get: getHandler } = handlers.ProductHandler(Repositories)
   const { get: getPrices } = handlers.PriceHandler(Repositories)
+  const { get: getPriceRecords } = handlers.PriceRecordHandler(Repositories)
   const { get: getCart } = handlers.CartHandler(Repositories)
 
   app.route({
@@ -26,6 +28,13 @@ export const routes = async (app, _opts) => {
     method: 'GET',
     schema: getPricesSchema,
     handler: getPrices,
+  })
+
+  app.route({
+    url: '/prices/record',
+    method: 'GET',
+    schema: getPriceRecordsSchema,
+    handler: getPriceRecords,
   })
 
   app.route({

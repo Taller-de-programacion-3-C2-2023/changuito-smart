@@ -39,6 +39,28 @@ export const getPricesSchema = {
   // },
 }
 
+export const getPriceRecordsSchema = {
+  querystring: {
+    type: 'object',
+    properties: {
+      products: { type: 'array', default: [], items: { type: 'string' } },
+      branches: { type: 'array', items: { type: 'string' } },
+      date: { type: 'string' },
+      offset: { type: 'number' },
+      limit: { type: 'number' },
+    },
+    required: ['products'],
+  },
+  // response: {
+  //   200: {
+  //     type: 'object',
+  //     properties: {
+  //       hello: { type: 'string' },
+  //     },
+  //   },
+  // },
+}
+
 export const getBranchesSchema = {
   querystring: {
     type: 'object',
