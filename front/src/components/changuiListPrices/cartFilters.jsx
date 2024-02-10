@@ -1,8 +1,6 @@
+import Config from "../../config.js"
 import React, { useState, useEffect } from "react";
-// import ProductSelector from "./productSelector";
-// import ProductCheckList from "./productCheckList";
 import { Dropdown } from "primereact/dropdown";
-import { Button } from "primereact/button";
 import { DataScroller } from "primereact/datascroller";
 
 export default function CartFilters(props) {
@@ -12,9 +10,9 @@ export default function CartFilters(props) {
   useEffect(
     function effectFunction() {
       async function fetchOptions() {
-        const endpount = `http://localhost:3030/products`;
+        const endpoint = `${Config.apiBase}/products`;
         const queryString = `name=${productFilter}`;
-        const response = await fetch(`${endpount}?${queryString}`);
+        const response = await fetch(`${endpoint}?${queryString}`);
         const json = await response.json();
         console.log("OK: Fetching response:  ", json.length, "  ", queryString);
         setProducts(json.slice(0, 10));
@@ -26,21 +24,10 @@ export default function CartFilters(props) {
       }
     },
     [productFilter]
-    // [productFilter, input]
   );
 
-  //   const onSearchProduct = (e) => {};
-
   function onProductSelection(e) {
-    // e.target:{name: null, id: null, value: {… lo de abajo}}
-    // e.value
-    // brand:// "SIN MARCA"
-    // id:// "7791675909226"
-    // name:// "Aceituna Negra 150 Gr"
-    // presntation:// "150.0 gr"
-    // _id:// "655bf16bd99f1801d5d88186"
-    // const selectedId = e.value.id;
-    // const productSelected = cartProducts.filter((x) => x.id === selectedId);
+
     props.onSelected(e.value);
   }
 
@@ -48,15 +35,7 @@ export default function CartFilters(props) {
     return (
       <div className="flex flex-row">
         <span>{data.name}</span>
-        {/* <Button
-          icon="pi pi-times"
-          // disabled={data.inventoryStatus === "OUTOFSTOCK"}
-          // MULTIPLICIDAD
-        ></Button> */}
       </div>
-      //     <div className="flex flex-row lg:flex-column align-items-center lg:align-items-end gap-4 lg:gap-2">
-      //       <span className="text-2xl font-semibold">${data.name}</span>
-      //     </div>
     );
   };
 

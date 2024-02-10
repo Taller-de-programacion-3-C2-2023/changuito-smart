@@ -1,7 +1,8 @@
 import * as L from 'leaflet';
+import Config from "../../config.js"
 
 async function getBranches(lat, lon) {
-  const url = `/api/branches?lat=${lat}&lon=${lon}`;
+  const url = `${Config.apiBase}/branches?lat=${lat}&lon=${lon}`;
   return fetch(url);
 }
 

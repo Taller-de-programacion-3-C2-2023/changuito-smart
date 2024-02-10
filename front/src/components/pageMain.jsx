@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../styles/Page.css";
 import { TabMenu } from "primereact/tabmenu";
-import BranchMap from "./branchMap";
+import BranchMap from "./priceMap/branchMap";
 import UseCaseList from "./changuiListPrices/cartPrices.uc";
 import ProductPrices from "./priceChart/productPrices.uc";
 
