@@ -1,11 +1,13 @@
 import { PriceHandler } from './prices'
+import { PriceRecordHandler } from './priceRecord'
 import { ProductHandler } from './products'
 import { BranchHandler } from './branches'
 import { CartHandler } from './cart'
 
 export default {
   BranchHandler,
-  ProductHandler,
-  PriceHandler,
   CartHandler,
+  PriceHandler,
+  PriceRecordHandler,
+  ProductHandler,
 }
