@@ -2,12 +2,15 @@ import 'dotenv/config'
 import { ProductScrapper } from './product.js'
 import { MongoClient } from 'mongodb'
 import { MONGO } from './configs.js'
+import { ScrapperUI } from './tui.js';
 
 async function main() {
   const client = new MongoClient(MONGO.URL)
+  const ui = new ScrapperUI();
 
   try {
     console.log('Starting...')
+    console.log(`Connecting to... ${MONGO.URL}`)
     await client.connect()
     const db = client.db(MONGO.DB)
 
@@ -17,7 +20,7 @@ async function main() {
     const options = { upsert: true }
     await statusCol.updateOne(query, update, options)
 
-    const productScrapper = new ProductScrapper(db)
+    const productScrapper = new ProductScrapper(db, ui)
     const products = await productScrapper.getProducts()
     if (products.success) {
       console.info('Product scrapping finished')

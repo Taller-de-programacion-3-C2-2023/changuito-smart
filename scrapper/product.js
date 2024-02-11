@@ -1,14 +1,17 @@
 import { BranchScrapper } from './branch.js'
 import axios from 'axios'
 import fs from 'fs'
-import { URL_SCRAP as URL, MONGO } from './configs.js'
+import { MONGO , SCRAP , THROTTLE_SECS } from './configs.js'
 
 const raw_headers = fs.readFileSync('scrapper-headers.json')
 const headers = JSON.parse(raw_headers)
 
+const URL = `${SCRAP.URL_BASE}${SCRAP.PRODUCT_ENDPOINT}`
+
 export class ProductScrapper {
-  constructor(db) {
-    this.db = db
+  constructor(db, ui) {
+    this.db = db;
+    this.ui = ui;
   }
 
   async getProducts() {
@@ -21,23 +24,19 @@ export class ProductScrapper {
       return
     }
     const branchesId = branches.map((b) => b.id)
+    const nBranches = branchesId.length;
+    this.ui.totalBranches = nBranches;
+    let curBranch = 0;
+    this.ui.updateBranchCounter(curBranch);
+    this.ui.render();
     let products = []
     for (const id of branchesId) {
-      try {
-        const branchProducts = await this.getProductsForBranch(id)
-        // await this.saveProducts(branchProducts);
-        // products.push(branchProducts);
-      } catch (e) {
-        console.info('Failed while scrapping branch with id', id, e)
-        return { success: false, lastId: id }
-      }
+        await this.scrapBranch(id);
+        curBranch++;
+        this.ui.updateBranchCounter(curBranch);
+        this.ui.render();
     }
     return { success: true, products: products }
-  }
-
-  async saveProducts(branchProducts) {
-    const productsCol = this.db.collection(MONGO.COLLECTION.PRODUCTS)
-    return productsCol.insertOne(branchProducts)
   }
 
   async getProductsForBranch(branchId) {
@@ -51,14 +50,11 @@ export class ProductScrapper {
     }
     const pageLimit = response.data.maxLimitPermitido
 
-    const promises = []
-    for (let offset = pageLimit; offset < total; offset += pageLimit) {
-      const curUrl = curUrlBase + '&offset=' + offset
-      promises.push(axios.get(curUrl, headers))
-    }
+    this.ui.totalProducts = total;
+    this.ui.productCounter = 0;
+    this.ui.render();
+    const products = await this.scrapProducts(pageLimit, total, branchId);
 
-    const resolved = await Promise.all(promises)
-    const products = resolved.map((response) => response.data.productos).flat()
     const totalProductsByBranch = firstProducts.concat(products)
     await this.saveProductsByBranch(branchId, totalProductsByBranch)
     return {
@@ -73,26 +69,89 @@ export class ProductScrapper {
     const mapped = products.map((prod) => ({
       prices: {
         branchId,
-        productId: prod.id,
+        productId: Number(prod.id),
         date: new Date(),
         price: prod.precio,
       },
       product: {
         id: prod.id,
         name: prod.nombre,
-        presntation: prod.presentacion,
+        presentation: prod.presentacion,
         brand: prod.marca,
       },
     }))
     const pricesCollection = this.db.collection(MONGO.COLLECTION.PRICES)
     const prices = mapped.map((x) => x.prices)
     const result = await pricesCollection.insertMany(prices)
-    console.log(`insertados ${prices.length} precios`)
+    //console.log(`insertados ${prices.length} precios`)
 
     const productCollection = this.db.collection(MONGO.COLLECTION.PRODUCTS)
     const productsData = mapped.map((x) => x.product)
     const options = { ordered: false }
     const productsDataInserts = await productCollection.insertMany(productsData, options)
-    console.log(`insertados ${productsData.length} produs`)
+    //console.log(`insertados ${productsData.length} produs`)
+  }
+
+  async saveProducts(branchProducts) {
+    const productsCol = this.db.collection(MONGO.COLLECTION.PRODUCTS)
+    return productsCol.insertOne(branchProducts)
+  }
+
+  async scrapBranch(id) {
+    let throttling = false
+    let scrapped = false
+    let loops = 0;
+    while (!scrapped) {
+      try {
+        if (throttling) {
+          this.ui.updateStatus(`Branch ${id} failed, waiting ${THROTTLE_SECS} secs to retry... (waited ${loops} times)`)
+          this.ui.render();
+          await new Promise(resolve => setTimeout(resolve, THROTTLE_SECS * 1000));
+          loops++;
+        }
+        const branchProducts = await this.getProductsForBranch(id);
+        await this.saveProducts(branchProducts);
+        scrapped = true;
+      } catch (e) {
+        throttling = true;
+      }
+    }
+  }
+
+  async scrapProducts(pageLimit, total, branchId) {
+    const resolved = [];
+    for (let offset = pageLimit; offset < total; offset += (pageLimit * SCRAP.CONCURRENT_QUERIES)) {
+      const promises = []
+      for(let i = 0; i < SCRAP.CONCURRENT_QUERIES; i++) {
+        const localOffset = offset + pageLimit * i;
+        promises.push(this.scrapProductPage(localOffset, pageLimit, branchId))
+      }
+      resolved.push(... await Promise.all(promises));
+    }
+    return resolved.flat();
+  }
+
+  async scrapProductPage(offset, pageLimit, branchId) {
+    const curUrlBase = URL + '&id_sucursal=' + branchId
+    const curUrl = curUrlBase + "&offset=" + offset;
+    this.ui.render();
+    let throttling = false
+    let scrapped = false
+    let products;
+    while (!scrapped) {
+      try {
+        if (throttling) {
+          this.ui.updateStatus(`Throttling ${THROTTLE_SECS} secs...`)
+          await new Promise(resolve => setTimeout(resolve, THROTTLE_SECS * 1000));
+        }
+        const response = await axios.get(curUrl, headers);
+        products = response.data.productos;
+        this.ui.updateProductCounter(products.length);
+        scrapped = true;
+      } catch (e) {
+        throttling = true;
+      }
+    }
+    return products;
   }
 }
