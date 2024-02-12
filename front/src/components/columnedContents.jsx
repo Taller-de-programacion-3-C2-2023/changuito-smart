@@ -23,8 +23,6 @@ export default function Column(props) {
       >
         {props.children[1]}
       </Section>
-      {/* <Section className="Column-left">{props.children[0]}</Section>
-      <Section>{props.children[1]}</Section> */}
     </Container>
   );
 }

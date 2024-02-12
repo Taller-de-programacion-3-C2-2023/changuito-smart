@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/App.css";
+import Config from "../../config.js"
+
 
 export default function ProductSelector(props) {
   const [productSearched, setProductSearched] = useState("");
@@ -10,7 +12,7 @@ export default function ProductSelector(props) {
   useEffect(
     function effectFunction() {
       async function fetchOptions() {
-        const endpoint = `/api/products`;
+        const endpoint = `${Config.apiBase}/products`;
         const queryString = `name=${productSearched}`;
         const response = await fetch(`${endpoint}?${queryString}`);
         const json = await response.json();

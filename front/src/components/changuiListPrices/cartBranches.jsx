@@ -1,14 +1,12 @@
 import "../../styles/App.css";
+import Config from "../../config.js"
 import React, { useState, useEffect, useRef } from "react";
-import logo from "../../logo.svg";
-// import DataTable from "react-data-table-component";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Toast } from "primereact/toast";
 
 export default function BranchPricesTable(props) {
   const [prices, setprices] = useState([]);
-  //   const [pending, setPending] = React.useState(true);
   const [expandedRows, setExpandedRows] = useState();
   const toast = useRef(null);
   useEffect(
@@ -17,8 +15,7 @@ export default function BranchPricesTable(props) {
         if (!props.selectedProductList.length) {
           return;
         }
-        // setPending(false);
-        const endpoint = `http://localhost:3030/cart`;
+        const endpoint = `${Config.apiBase}/cart`;
         const queryString = props.selectedProductList.reduce(
           (prev, cur) => `${prev}&products=${cur.id}`,
           "?"
@@ -76,7 +73,6 @@ export default function BranchPricesTable(props) {
           <Column
             field="brand"
             header="Unit price"
-            // body={formatCurrency(rowData.amount)}
             sortable
           ></Column>
         </DataTable>
@@ -120,14 +116,7 @@ export default function BranchPricesTable(props) {
           <Column field="branch.sucursalNombre" header="Sucursal"></Column>
           <Column field="branch.direccion" header="Direccion"></Column>
           <Column field="branch.localidad" header="Localidad"></Column>
-          {/* <Column field="price" header="Price" body={priceBodyTemplate}></Column> */}
           <Column field="cartPrice" header="Precio"></Column>
-          {/* <Column
-          field="rating"
-          header="Reviews"
-          body={ratingBodyTemplate}
-        ></Column>
-        <Column header="Status" body={statusBodyTemplate}></Column> */}
         </DataTable>
       </div>
     </div>

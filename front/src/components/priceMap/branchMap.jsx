@@ -1,7 +1,7 @@
 import 'leaflet/dist/leaflet.css'
 import React from "react";
 import { MapContainer, TileLayer, useMap } from 'react-leaflet'
-import { ChanguitoMap } from "./ChanguitoMap.js";
+import { ChanguitoMap } from "./changuitoMap.js";
 import "leaflet/dist/leaflet.css";
 import iconMarker from "leaflet/dist/images/marker-icon.png";
 import iconRetina from "leaflet/dist/images/marker-icon-2x.png";
