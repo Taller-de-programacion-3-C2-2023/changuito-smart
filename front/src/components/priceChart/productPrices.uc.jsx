@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, registerables } from 'chart.js';
+import { Chart as ChartJS, Colors, registerables } from 'chart.js';
 
 import "../../styles/App.css";
 import ColumnedContent from "../columnedContents";
 
 ChartJS.register(...registerables);
+ChartJS.register(Colors);
 
 const chartDefault = {
   labels: [],
@@ -33,9 +34,9 @@ export default function ProductPrices(props) {
             return { x: dateLabel, y: price.price }
           });
           const dataset = {
-            label: "case " + record.product,
+            label: "case " + record._id,
             data: prices,
-            borderWidth: 1
+            borderWidth: 1,
           }
           datasets.push(dataset);
         }
@@ -51,8 +52,13 @@ export default function ProductPrices(props) {
         const endpoint = `http://localhost:3030/prices/record`;
         const fromDate = '2024-01-01';
         const toDate = '2024-02-01';
-        const queryString = `from='${fromDate}'&to='${toDate}'`
-        const response = await fetch(`${endpoint}?${queryString}`);
+        const selectedProductList = [{id: 7791675909196}, {id: 7795735000328}]
+        const queryProductString = selectedProductList.reduce(
+          (prev, cur) => `${prev}&products=${cur.id}`,
+          ""
+        );
+        const queryDateString = `from='${fromDate}'&to='${toDate}'`
+        const response = await fetch(`${endpoint}?${queryProductString}&${queryDateString}`);
         const json = await response.json();
         updatePriceRecord(json);
       }

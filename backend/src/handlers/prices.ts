@@ -8,7 +8,7 @@ export const PriceHandler = (dependencies: any) => {
     const { products } = request.query
 
     const result = await priceRepository.findBy({ products })
-    return result
+    return result;
   }
 
   return {
