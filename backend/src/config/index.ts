@@ -24,6 +24,7 @@ export const mongoConfig = {
   url: `mongodb://${mongoUsername}:${mongoPassword}@${mongoHost}:27017/`,
   forceClose: true,
 }
+console.log('mongoConfig ', mongoConfig.url)
 
 export const paginationDefaults = { offset: 0, limit: 20 }
 

@@ -12,14 +12,19 @@ export default function PriceMap(props) {
     console.info(cartProducts);
   }
 
+  function removeSelectedProduct(productSelected) {
+    setCartProducts(cartProducts.filter((x) => x._id !== productSelected._id));
+  }
+
   return (
     <div>
       <ColumnedContent>
         <CartFilters
-          cartProducts={cartProducts}
+          onUnselected={removeSelectedProduct}
           onSelected={addSelectedProduct}
+          cartProducts={cartProducts}
         ></CartFilters>
-        <BranchMap/>
+        <BranchMap selectedProductList={cartProducts} />
       </ColumnedContent>
     </div>
   );

@@ -1,11 +1,14 @@
-import Config from "../../config.js"
+import Config from "../../config.js";
 import React, { useState, useEffect } from "react";
 import { Dropdown } from "primereact/dropdown";
 import { DataScroller } from "primereact/datascroller";
+import { Checkbox } from "primereact/checkbox";
+import { Button } from "primereact/button";
 
 export default function CartFilters(props) {
   const [products, setProducts] = useState([]);
   const [productFilter, setProductFilter] = useState("");
+  const [checked, setChecked] = useState(true);
 
   useEffect(
     function effectFunction() {
@@ -27,14 +30,31 @@ export default function CartFilters(props) {
   );
 
   function onProductSelection(e) {
+    props.onSelected({ ...e.value, enable: true });
+  }
 
-    props.onSelected(e.value);
+  function onProductCancel(item) {
+    props.onUnselected(item);
   }
 
   const itemTemplate = (data) => {
     return (
-      <div className="flex flex-row">
-        <span>{data.name}</span>
+      <div key={data._id} className="flex align-items-center">
+        <div>
+          <Button
+            icon="pi pi-times"
+            rounded
+            text
+            severity="danger"
+            aria-label="Cancel"
+            onClick={() => onProductCancel(data)}
+          />
+        </div>
+        <div>
+          <label htmlFor={data._id} className="ml-2">
+            {data.name}
+          </label>
+        </div>
       </div>
     );
   };
@@ -56,7 +76,6 @@ export default function CartFilters(props) {
         className="flex align-items-center"
         // className="w-full md:w-14rem"
       />
-
       <div className="card">
         <DataScroller
           value={props.cartProducts}

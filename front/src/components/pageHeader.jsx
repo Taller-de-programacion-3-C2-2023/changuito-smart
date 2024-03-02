@@ -1,13 +1,13 @@
 import React from "react";
+import logo from "../images/changuito-logo.png";
 import "../styles/Page.css";
+
+console.log(logo);
 
 export default function Header(props) {
   return (
     <header className="Header">
-      <h1>HEADER</h1>
+      <img src={logo} alt="Logo" />
     </header>
-    // <div className="Header">
-    //   <h1>HEADER</h1>
-    // </div>
   );
 }
