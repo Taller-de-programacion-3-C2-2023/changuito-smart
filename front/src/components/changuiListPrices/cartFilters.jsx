@@ -34,7 +34,6 @@ export default function CartFilters(props) {
   }
 
   function onProductCancel(item) {
-    console.log("lalalal   ", item);
     props.onUnselected(item);
   }
 
@@ -52,13 +51,6 @@ export default function CartFilters(props) {
           />
         </div>
         <div>
-          {/* <Checkbox
-            inputId={data._id}
-            name="selectedProducts"
-            value={data.name}
-            onChange={(e) => setChecked(e.checked)}
-            checked={checked}
-          /> */}
           <label htmlFor={data._id} className="ml-2">
             {data.name}
           </label>

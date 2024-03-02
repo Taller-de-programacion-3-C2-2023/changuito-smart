@@ -14,6 +14,8 @@ export class ChanguitoMap {
   centerCoords;
 
   constructor(centerCoords = [-34.6109, -58.3776]) {
+    console.log("################################ ChanguitoMap");
+
     this.centerCoords = centerCoords;
   }
 

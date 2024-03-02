@@ -23,14 +23,14 @@ export default function BranchMap(props) {
 
   useEffect(
     function effectFunction() {
-      async function actualizarMapa() {
+      async function updateMap() {
         const idProducts = props.selectedProductList.map((p) => p.id);
         changuitoMap.setProduct(idProducts);
         await changuitoMap.onCenterChanged();
         console.log("BranchMap   actualizando producto: ", idProducts);
       }
       try {
-        actualizarMapa();
+        updateMap();
       } catch (err) {
         console.log("ERROR: Fetching error");
       }
@@ -52,7 +52,7 @@ export default function BranchMap(props) {
   }
 
   return (
-    <>
+    <div id="map">
       <MapContainer
         className="changuito-map"
         center={mapCenter}
@@ -63,6 +63,6 @@ export default function BranchMap(props) {
         <TileLayer url="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <MapHooks />
       </MapContainer>
-    </>
+    </div>
   );
 }
