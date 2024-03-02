@@ -2,7 +2,7 @@ import * as L from 'leaflet';
 import Config from "../../config.js"
 
 async function getBranches(lat, lon) {
-  const url = `${Config.apiBase}/branches?lat=${lat}&lon=${lon}`;
+  const url = `${Config.apiBase}/cart??&products=7791675909196&lat=${lat}&lon=${lon}`;
   return fetch(url);
 }
 
@@ -42,6 +42,7 @@ export class ChanguitoMap {
     
     const branchesResponse = await getBranches(this.centerCoords.lat, this.centerCoords.lng);
     const branches = await branchesResponse.json();
+    console.log("Got branches:", branches);
     const closestBranches = branches.slice(0,10);
 
     this.centerMarker = new L.marker(this.centerCoords).addTo(this.map);
@@ -52,19 +53,33 @@ export class ChanguitoMap {
     console.info("Clicked:", e);
   }
 
-  addBranchesMarkers(branches) {
-    console.log("adding branches");
-    this.markers = branches.map(branch => {
-      const coords = [branch.location.coordinates[1], branch.location.coordinates[0]];
-      const branchName = branch.sucursalNombre;
-      const branchBrand = branch.banderaDescripcion;
-      const popup = L.popup({autoPan: false})
-        .setContent(`${branchName} (${branchBrand})`);
-      const marker = new L.marker(coords)
+  addBranchesMarkers(markers) {
+    const self = this;
+    console.log("adding markers");
+    this.markers = markers.map(marker => {
+      const coords = [marker.branch.location.coordinates[1], marker.branch.location.coordinates[0]];
+      const content = self.getMarkerContent(marker)
+      const popup = L.popup({autoPan: false}).setContent(content);
+      const lMarker = new L.marker(coords)
         .bindPopup(popup)
         .on('mouseover', function (e) { this.openPopup();})
-        .on('click', e => {this.onBranchSelected(branch)});
-      return marker.addTo(this.map)
+        .on('click', e => {this.onBranchSelected(marker)});
+      return lMarker.addTo(this.map)
     });
+  }
+
+  getMarkerContent(marker) {
+    const branchName = marker.branch.sucursalNombre;
+    const branchBrand = marker.branch.banderaDescripcion;
+    const branchTotal = marker.cartPrice;
+    const productList = marker.cartProducts.map(
+      p => `<li>${p}</li>`)
+
+    return `<div class="mapPopup">
+      <div class="branchName">${branchName}</div>
+      (${branchBrand})
+      <ul>${productList}</ul>
+      <div class="branchTotal">Total: ${branchTotal}</div>
+      </div>`;
   }
 }

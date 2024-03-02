@@ -26,15 +26,31 @@ export class BranchScrapper {
     console.log('DB count: ', dbCount, 'Remote Count:', remoteCount)
     if (dbCount == 0) {
       const branches = await this.getRemoteBranches()
-      console.log('Adding ', branches.length, ' branches')
       await branchCol.deleteMany({})
+      console.log('Adding ', branches.length, ' branches')
       await branchCol.insertMany(branches)
       await branchCol.createIndex({ location: '2dsphere' })
-      return branches
-    } else {
-      console.log('Branches already exist')
-      return this.getLocalBranches(branchCol)
+      // TODO
+      console.log('Removing extra branches')
+      const pipeline = [
+        {
+          $geoNear: {
+            near: { type: 'Point', coordinates: SCRAP.BRANCH_CENTER },
+            distanceField: 'dist.calculated',
+            includeLocs: 'dist.location',
+            spherical: true,
+          },
+        },
+        { $limit: SCRAP.BRANCH_LIMIT },
+      ]
+      const sortedBranches = await branchCol.aggregate(pipeline).toArray();
+      const filterIds = sortedBranches.map(b => b._id);
+      const delete_query = {
+        "_id": {"$nin": filterIds}
+      }
+      await branchCol.deleteMany(delete_query);
     }
+    return this.getLocalBranches(branchCol)
   }
 
   async countRemoteBranches() {
@@ -42,7 +58,7 @@ export class BranchScrapper {
     return response.data.total
   }
 
-  async getLocalBranches(branchCol) {
+  getLocalBranches(branchCol) {
     return branchCol.find().toArray()
   }
 

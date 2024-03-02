@@ -36,7 +36,7 @@ export default function BranchMap(props) {
       <MapContainer
         className="changuito-map"
         center={[-34.6109, -58.3776]}
-        zoom={4}
+        zoom={10}
         maxZoom={19}
         scrollWheelZoom={true}>
         <TileLayer

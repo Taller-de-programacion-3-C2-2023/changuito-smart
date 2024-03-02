@@ -88,4 +88,8 @@ export class ScrapperUI {
       left: 3,
     });
   }
+
+  exit() {
+    this.screen.destroy()
+  }
 }

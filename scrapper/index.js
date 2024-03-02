@@ -23,6 +23,7 @@ async function main() {
     const productScrapper = new ProductScrapper(db, ui)
     const products = await productScrapper.getProducts()
     if (products.success) {
+      ui.exit();
       console.info('Product scrapping finished')
     } else {
       console.warn('Scrapping interrupted at branch %s', products.lastId)

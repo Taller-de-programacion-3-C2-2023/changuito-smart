@@ -12,6 +12,7 @@ export default function Column(props) {
         defaultSize={0.2 * width}
         minSize={0.15 * width}
         maxSize={0.4 * width}
+        className="changuito-col"
       >
         {props.children[0]}
       </Section>
@@ -20,6 +21,7 @@ export default function Column(props) {
         defaultSize={0.8 * width}
         maxSize={0.85 * width}
         minSize={0.6 * width}
+        className="changuito-col"
       >
         {props.children[1]}
       </Section>
