@@ -1,5 +1,5 @@
 import "../../styles/App.css";
-import Config from "../../config.js"
+import Config from "../../config.js";
 import React, { useState, useEffect, useRef } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -9,10 +9,12 @@ export default function BranchPricesTable(props) {
   const [prices, setprices] = useState([]);
   const [expandedRows, setExpandedRows] = useState();
   const toast = useRef(null);
+
   useEffect(
     function effectFunction() {
       async function fetchOptions() {
         if (!props.selectedProductList.length) {
+          setprices([]);
           return;
         }
         const endpoint = `${Config.apiBase}/cart`;
@@ -64,17 +66,16 @@ export default function BranchPricesTable(props) {
 
   const rowExpansionTemplate = (price) => {
     const productsData = price.cartProducts.map((prodId) =>
-      props.selectedProductList.find((prod) => prod.id === prodId)
+      props.selectedProductList.find(
+        (prod) => (prod.id === prodId) & prod.enable
+      )
     );
+
     return (
       <div className="p-2">
         <DataTable value={productsData} size="small">
           <Column field="name" header="Producto" sortable></Column>
-          <Column
-            field="brand"
-            header="Unit price"
-            sortable
-          ></Column>
+          <Column field="brand" header="Unit price" sortable></Column>
         </DataTable>
       </div>
     );
@@ -98,7 +99,7 @@ export default function BranchPricesTable(props) {
           footer={footer}
           size={"normal"}
           paginator
-          rows={2}
+          rows={5}
           rowsPerPageOptions={[2, 5, 10, 25, 50]}
           tableStyle={{ minWidth: "60rem" }}
           expandedRows={expandedRows}

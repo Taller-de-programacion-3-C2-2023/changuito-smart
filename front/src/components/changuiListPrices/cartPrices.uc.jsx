@@ -14,12 +14,17 @@ export default function UseCaseList(props) {
     setCartProducts(cartProducts.concat(productSelected));
   }
 
+  function removeSelectedProduct(productSelected) {
+    setCartProducts(cartProducts.filter((x) => x._id !== productSelected._id));
+  }
+
   return (
     <div>
       <ColumnedContent>
         <>
           <CartFilters
             onSelected={addSelectedProduct}
+            onUnselected={removeSelectedProduct}
             cartProducts={cartProducts}
           ></CartFilters>
           {/* <ProductSelector

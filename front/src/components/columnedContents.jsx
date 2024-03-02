@@ -1,12 +1,21 @@
 import React, { useRef } from "react";
 import { useContainerDimensions } from "./helpers/useContainerDimensions.js";
 import { Container, Section, Bar } from "@column-resizer/react";
+import { Splitter, SplitterPanel } from "primereact/splitter";
 
 export default function Column(props) {
   const componentRef = useRef();
   const { width, h } = useContainerDimensions(componentRef);
 
   return (
+    // <Splitter style={{ height: "300px" }}>
+    //   <SplitterPanel className="flex align-items-center justify-content-center">
+    //     {props.children[0]}
+    //   </SplitterPanel>
+    //   <SplitterPanel className="flex align-items-center justify-content-center">
+    //     {props.children[1]}
+    //   </SplitterPanel>
+    // </Splitter>
     <Container ref={componentRef}>
       <Section
         defaultSize={0.2 * width}

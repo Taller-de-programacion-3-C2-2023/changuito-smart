@@ -1,6 +1,7 @@
-import 'leaflet/dist/leaflet.css'
-import React from "react";
-import { MapContainer, TileLayer, useMap } from 'react-leaflet'
+import "leaflet/dist/leaflet.css";
+import React, { useState, useEffect } from "react";
+import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import Config from "../../config.js";
 import { ChanguitoMap } from "./changuitoMap.js";
 import "leaflet/dist/leaflet.css";
 import iconMarker from "leaflet/dist/images/marker-icon.png";
@@ -18,10 +19,29 @@ const changuitoMap = new ChanguitoMap();
 let moveEndHandling = false;
 
 export default function BranchMap(props) {
+  const [mapCenter, setMapCenter] = useState([-34.6109, -58.3776]);
+
+  useEffect(
+    function effectFunction() {
+      async function actualizarMapa() {
+        const idProducts = props.selectedProductList.map((p) => p.id);
+        changuitoMap.setProduct(idProducts);
+        await changuitoMap.onCenterChanged();
+        console.log("BranchMap   actualizando producto: ", idProducts);
+      }
+      try {
+        actualizarMapa();
+      } catch (err) {
+        console.log("ERROR: Fetching error");
+      }
+    },
+    [props.selectedProductList]
+  );
+
   function MapHooks() {
     const map = useMap();
     changuitoMap.setMap(map);
-    map.on('moveend', async e => {
+    map.on("moveend", async (e) => {
       if (!moveEndHandling) {
         moveEndHandling = true;
         await changuitoMap.onMoveEnd(map.getCenter());
@@ -30,18 +50,17 @@ export default function BranchMap(props) {
     });
     return null;
   }
-  
+
   return (
     <>
       <MapContainer
         className="changuito-map"
-        center={[-34.6109, -58.3776]}
+        center={mapCenter}
         zoom={10}
         maxZoom={19}
-        scrollWheelZoom={true}>
-        <TileLayer
-          url="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+        scrollWheelZoom={true}
+      >
+        <TileLayer url="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <MapHooks />
       </MapContainer>
     </>
