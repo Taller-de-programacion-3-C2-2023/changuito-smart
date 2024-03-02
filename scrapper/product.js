@@ -69,7 +69,7 @@ export class ProductScrapper {
     const mapped = products.map((prod) => ({
       prices: {
         branchId,
-        productId: Number(prod.id),
+        productId: prod.id,
         date: new Date(),
         price: prod.precio,
       },
