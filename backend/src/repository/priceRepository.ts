@@ -44,6 +44,10 @@ export default class PriceRepository extends MongoRepository {
       {
         $match: {
           productId: { $in: products },
+          date: {
+            $gte: fromDate,
+            $lt: toDate
+          }
         },
       },
       {

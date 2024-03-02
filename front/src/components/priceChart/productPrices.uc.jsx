@@ -21,16 +21,29 @@ export default function ProductPrices(props) {
     return array.indexOf(value) === index;
   }
 
+  function buildDateLabels(minDate, maxDate) {
+    const labels = [];
+
+    while (minDate <= maxDate) {
+      const dateLabel = minDate.toISOString().split('T')[0]
+      labels.push(dateLabel);
+      minDate.setDate(minDate.getDate() + 1);
+    }
+    return labels
+  }
+
   useEffect(
     function effectFunction() {
       const updatePriceRecord = (data) => {
         const datasets = []
-        const labels = []
+        let minDate = new Date();
+        let maxDate = new Date();
         for (const record of data) {
           const prices = record.prices.map(price => {
             const priceDate = new Date(price.date);
+            minDate = minDate < priceDate ? minDate : priceDate;
+            maxDate = maxDate > priceDate ? maxDate : priceDate;
             const dateLabel = priceDate.toISOString().split('T')[0]
-            labels.push(dateLabel);
             return { x: dateLabel, y: price.price }
           });
           const dataset = {
@@ -41,8 +54,10 @@ export default function ProductPrices(props) {
           datasets.push(dataset);
         }
 
+        const labels = buildDateLabels(minDate, maxDate);
+
         const newData = {
-          labels: labels.filter(filterUnique),
+          labels,
           datasets: datasets
         };
         setChartData(newData);
@@ -50,8 +65,8 @@ export default function ProductPrices(props) {
 
       async function fetchOptions() {
         const endpoint = `http://localhost:3030/prices/record`;
-        const fromDate = '2024-01-01';
-        const toDate = '2024-02-01';
+        const fromDate = '2024-03-01';
+        const toDate = '2024-03-04';
         const selectedProductList = [{id: 7791675909196}, {id: 7795735000328}]
         const queryProductString = selectedProductList.reduce(
           (prev, cur) => `${prev}&products=${cur.id}`,
