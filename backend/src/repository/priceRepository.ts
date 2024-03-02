@@ -13,8 +13,10 @@ export default class PriceRepository extends MongoRepository {
   }
 
   // TODO ver que pasa si no se manda filtro
-  public async findByCart(filter: { products?: string[]; branches?: string[] }) {
+  public async findByCart(filter: { products?: number[]; branches?: string[]; lat; lon; }) {
     const { products, branches } = filter
+    console.info("Products: ", products);
+    console.info("Branches: ", branches);
     const pipeline = [
       {
         $match: {

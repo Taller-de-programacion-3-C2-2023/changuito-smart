@@ -2,7 +2,9 @@ export const SCRAP = {
   URL_BASE: 'https://d3e6htiiul5ek9.cloudfront.net/prod',
   PRODUCT_ENDPOINT: '/productos?limit=100',
   BRANCH_ENDPOINT: '/sucursales?limit=30',
-  CONCURRENT_QUERIES: process.env.CONCURRENT_QUERIES || 6
+  CONCURRENT_QUERIES: process.env.CONCURRENT_QUERIES || 6,
+  BRANCH_LIMIT: 20,
+  BRANCH_CENTER: [-58.3776, -34.6109]
 }
 
 export const MONGO = {

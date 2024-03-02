@@ -110,7 +110,6 @@ export default function BranchPricesTable(props) {
           onRowCollapse={onRowCollapse}
           rowExpansionTemplate={rowExpansionTemplate}
           dataKey="_id"
-          filterDisplay={"row"}
         >
           <Column expander={allowExpansion} style={{ width: "5rem" }} />
           <Column field="branch.sucursalNombre" header="Sucursal"></Column>

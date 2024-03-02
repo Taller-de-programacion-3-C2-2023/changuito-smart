@@ -6,7 +6,6 @@ export default class BranchRepository extends MongoRepository {
   }
 
   public async findByLocation(lon: number, lat: number, pagination?: { limit: number; offset: number }) {
-    console.log(`[${lon}, ${lat}]`)
     const pipeline = [
       {
         $geoNear: {
@@ -19,7 +18,6 @@ export default class BranchRepository extends MongoRepository {
       { $skip: pagination?.offset },
       { $limit: pagination?.limit },
     ]
-    const result = await this.aggregate(pipeline)
-    return result
+    return this.aggregate(pipeline)
   }
 }

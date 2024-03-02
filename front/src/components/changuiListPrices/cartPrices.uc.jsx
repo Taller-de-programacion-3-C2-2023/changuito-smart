@@ -30,21 +30,6 @@ export default function UseCaseList(props) {
         </>
 
         <BranchPricesTable selectedProductList={cartProducts} />
-        {/* <div className="Page-content">
-          <h3> Results with {selectedProductList.length} products selected</h3>
-          <DataTable
-            title="Products"
-            columns={columns}
-            data={selectedProductList}
-            progressPending={pending}
-            progressComponent={
-              <img src={logo} className="App-logo" alt="logo" />
-            }
-            pagination
-            highlightOnHover
-            pointerOnHover
-          />
-        </div> */}
       </ColumnedContent>
     </div>
   );
