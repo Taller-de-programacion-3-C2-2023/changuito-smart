@@ -37,4 +37,30 @@ export default class PriceRepository extends MongoRepository {
     const result = await this.aggregate(pipeline)
     return result
   }
+
+  public async findByDateRange(filter: { products?: string[]; fromDate: Date; toDate: Date}) {
+    const { products, fromDate, toDate } = filter
+    const pipeline = [
+      {
+        $match: {
+          productId: { $in: products },
+        },
+      },
+      {
+        $group: {
+          _id: {date: {$dateToString: { format: '%Y-%m-%d', date: '$date'}}, productId: '$productId'},
+          priceAvg: {$avg: '$price'}
+        },
+      },
+      { $sort: {"_id.date":1 } },
+      {
+        $group: {
+          _id: '$_id.productId',
+          prices: {$push: {price: '$priceAvg', date:'$_id.date'}}
+        },
+      },
+    ]
+    const result = await this.aggregate(pipeline);
+    return result
+  }
 }
