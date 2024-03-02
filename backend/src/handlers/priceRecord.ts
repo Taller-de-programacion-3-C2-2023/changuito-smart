@@ -5,9 +5,10 @@ export const PriceRecordHandler = (dependencies: any) => {
 
   const getPriceRecords = async (request: FastifyRequest, reply: FastifyReply) => {
     //@ts-ignore
-    const { products, fromDate, toDate } = request.query
+    const { products, from, to } = request.query;
 
-    return await priceRepository.findByDateRange({ products, fromDate, toDate })
+    return await priceRepository.findByDateRange(
+      { products, fromDate: new Date(from), toDate: new Date(to) })
   }
 
   return {
