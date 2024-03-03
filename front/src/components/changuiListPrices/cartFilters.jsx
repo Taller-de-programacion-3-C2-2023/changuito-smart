@@ -2,13 +2,11 @@ import Config from "../../config.js";
 import React, { useState, useEffect } from "react";
 import { Dropdown } from "primereact/dropdown";
 import { DataScroller } from "primereact/datascroller";
-import { Checkbox } from "primereact/checkbox";
 import { Button } from "primereact/button";
 
 export default function CartFilters(props) {
   const [products, setProducts] = useState([]);
   const [productFilter, setProductFilter] = useState("");
-  const [checked, setChecked] = useState(true);
 
   useEffect(
     function effectFunction() {
@@ -61,8 +59,7 @@ export default function CartFilters(props) {
 
   return (
     <>
-      <p>Create your cart</p>
-
+      <h3> Create your cart</h3>
       <Dropdown
         // value={selectedProductList}
         onChange={onProductSelection}
@@ -72,19 +69,18 @@ export default function CartFilters(props) {
         showFilterClear
         onFilter={(e) => setProductFilter(e.filter)}
         virtualScrollerOptions={{ itemSize: 38 }}
-        placeholder="Select some produts"
-        className="flex align-items-center"
-        // className="w-full md:w-14rem"
+        placeholder="...producto"
+        className="flex align-items-center padding:30px"
       />
       <div className="card">
         <DataScroller
+          header="Productos seleccionados"
           value={props.cartProducts}
           itemTemplate={itemTemplate}
           rows={5}
-          inline
+          // inline
           buffer={4}
-          emptyMessage="No product selected"
-          header="Your selected products"
+          emptyMessage="Aun no se han seleccionado productos"
         />
       </div>
 

@@ -1,4 +1,4 @@
-import "../../styles/App.css";
+import "../../App.css";
 import React, { useState } from "react";
 import BranchMap from "./branchMap";
 import CartFilters from "../changuiListPrices/cartFilters";
@@ -17,7 +17,7 @@ export default function PriceMap(props) {
   }
 
   return (
-    <div>
+    <div className="Container">
       <ColumnedContent>
         <CartFilters
           onUnselected={removeSelectedProduct}

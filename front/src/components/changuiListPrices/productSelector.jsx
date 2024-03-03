@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from "react";
-import "../../styles/App.css";
-import Config from "../../config.js"
-
+import Config from "../../config.js";
 
 export default function ProductSelector(props) {
   const [productSearched, setProductSearched] = useState("");
   const [productsList, setProductsList] = useState([]);
-  // const [input, setInput] = useState("");
-  // const [isSearching, setIsSearching] = useState(true);
 
   useEffect(
     function effectFunction() {
@@ -26,7 +22,6 @@ export default function ProductSelector(props) {
       }
     },
     [productSearched]
-    // [productSearched, input]
   );
 
   const onSearchProduct = (e) => {
