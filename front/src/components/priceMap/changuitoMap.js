@@ -98,16 +98,22 @@ export class ChanguitoMap {
     });
   }
 
+  roundToNearest100(number) {
+    return Math.round(number / 100) * 100;
+  }
+
   getMarkerContent(marker) {
     const branchName = marker.branch.sucursalNombre;
     const branchBrand = marker.branch.banderaDescripcion;
     const branchTotal = marker.cartPrice;
+    const branchDistance = this.roundToNearest100(marker.branch.dist.calculated);
     const productCount = marker.cartProducts.length;
 
     return `<div class="mapPopup">
       <div class="branchName">${branchName}</div>
       (${branchBrand})
       <ul>${productCount} de ${this.productsSelected.length} productos</ul>
+      <ul>A ${branchDistance} metros</ul>
       <div class="branchTotal">Total: ${branchTotal}</div>
       </div>`;
   }

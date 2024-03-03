@@ -1,0 +1,66 @@
+.App{
+    margin: 0 auto; /* Centrar el contenedor horizontalmente */
+    padding: 0;
+    background-color: #ffffff; /* Color de fondo del contenedor */
+    flex-direction: column;
+}
+
+
+.Header {
+    background: #ffffff; 
+    /* Otras propiedades de estilo para el encabezado */
+    height: 120px; /* Altura del encabezado */
+    display: flex;
+  }
+
+.Main {
+    /* max-width: 1200px; Ancho máximo del contenedor */
+    margin: 0 auto; /* Centrar el contenedor horizontalmente */
+    padding: 20px; /* Espaciado interno del contenedor */
+    background-color: #ffffff; /* Color de fondo del contenedor */
+    flex-direction: column;
+}
+
+.Footer {
+    height: 100px; /* Altura fija del pie de página */
+    background-color: #333;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 120px; 
+
+  }
+  
+  .FooterContent {
+    display: flex;
+    align-items: center;
+  }
+  
+  .Logo {
+    width: 50px; /* Tamaño de la imagen */
+    height: auto;
+    margin-right: 10px; /* Espacio entre la imagen y el texto */
+  }
+
+
+  .Container {
+    /* max-width: 1200px; Ancho máximo del contenedor */
+    margin: 0 auto; /* Centrar el contenedor horizontalmente */
+    padding: 20px; /* Espaciado interno del contenedor */
+    background-color: #f0f0f0; /* Color de fondo del contenedor */
+    border-radius: 8px; /* Radio de borde para redondear las esquinas */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra del contenedor */
+    /* display: flex; */
+    flex-direction: column;
+  }
+
+.columned-result{
+    height: 650px;
+    width: 100%;
+}
+
+.changuito-map {
+    height: 650px;
+    width: 100%;
+}

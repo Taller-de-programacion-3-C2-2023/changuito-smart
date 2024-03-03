@@ -1,7 +1,4 @@
-import "../../styles/App.css";
 import React, { useState } from "react";
-import ProductSelector from "./productSelector";
-import ProductCheckList from "./productCheckList";
 import CartFilters from "./cartFilters";
 import BranchPricesTable from "./cartBranches";
 import ColumnedContent from "../columnedContents";
@@ -19,7 +16,7 @@ export default function UseCaseList(props) {
   }
 
   return (
-    <div>
+    <div className="Container">
       <ColumnedContent>
         <>
           <CartFilters
@@ -27,11 +24,6 @@ export default function UseCaseList(props) {
             onUnselected={removeSelectedProduct}
             cartProducts={cartProducts}
           ></CartFilters>
-          {/* <ProductSelector
-            selectedProductList={selectedProductList}
-            onSelected={addSelectedProduct}
-          /> */}
-          {/* <ProductCheckList products={cartProducts}></ProductCheckList> */}
         </>
 
         <BranchPricesTable selectedProductList={cartProducts} />

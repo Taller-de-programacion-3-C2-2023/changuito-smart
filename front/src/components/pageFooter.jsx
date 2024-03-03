@@ -1,11 +1,13 @@
 import React from "react";
-import "../styles/Page.css";
 
 export default function Footer(props) {
   return (
-    <div className="Footer">
-      <h1>FOOTER</h1>
-      {/* <p>{props.subtitle}</p> */}
-    </div>
+    // <div className="Footer">
+    <footer className="Footer">
+      <div className="FooterContent">
+        <img src="tu_imagen.png" alt="Logo" className="Logo" />
+        <p>Este es un trabajo práctico para la facultad.</p>
+      </div>
+    </footer>
   );
 }

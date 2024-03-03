@@ -16,7 +16,7 @@ async function main() {
 
     const statusCol = db.collection(MONGO.COLLECTION.STATUS)
     const query = {}
-    const update = { $set: { status: 'Started' } }
+    const update = { $set: { status: 'Started', lastScrap: new Date() } }
     const options = { upsert: true }
     await statusCol.updateOne(query, update, options)
 

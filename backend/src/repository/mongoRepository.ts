@@ -1,14 +1,20 @@
+const STATUS = "status"
+
 export class MongoRepository {
   private dbClient: any
   private dbName: string
   private collectionName: string
   private collection: any
+  protected status: Promise<any>
 
   constructor(dbClient: any, dbName: string, collectionName: string) {
     this.dbClient = dbClient
     this.dbName = dbName
-    this.collectionName = collectionName
-    this.collection = this.dbClient.db(this.dbName).collection(this.collectionName)
+    this.collectionName = collectionName;
+    const db = this.dbClient.db(this.dbName);
+    const statusCollection = db.collection(STATUS);
+    this.status = statusCollection.findOne({})
+    this.collection = db.collection(this.collectionName)
   }
 
   protected async find(filter: any = {}, pagination?: { limit: number; offset: number; sort?: any }): Promise<any> {

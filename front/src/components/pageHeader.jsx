@@ -1,6 +1,5 @@
 import React from "react";
 import logo from "../images/changuito-logo.png";
-import "../styles/Page.css";
 
 console.log(logo);
 
