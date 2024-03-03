@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "../styles/Page.css";
 import { TabMenu } from "primereact/tabmenu";
 import PriceMap from "./priceMap/priceMap.uc";
 import UseCaseList from "./changuiListPrices/cartPrices.uc";
@@ -21,7 +20,10 @@ export default function Main(props) {
   ];
 
   return (
-    <div className="Main">
+    <div
+      className="Main"
+      //className="Main"
+    >
       <TabMenu
         model={menuItems}
         activeIndex={activeIndex}
