@@ -7,17 +7,20 @@ export default class PriceRepository extends MongoRepository {
 
   public async findBy(filter: { products?: string[]; branches?: string[] }) {
     const { products } = filter
-    console.log(products)
     const result = await this.find({ productId: { $in: products } })
     return result
   }
 
   // TODO ver que pasa si no se manda filtro
-  public async findByCart(filter: { products?: string[]; branches?: string[]; lat; lon; }) {
+  public async findByCart(
+      filter: { products?: string[]; branches?: string[]; }
+    ) {
     const { products, branches } = filter
+    const scrapDate = (await this.status).lastScrap || new Date();
     const pipeline = [
       {
         $match: {
+          date: {$gte: scrapDate},
           productId: { $in: products },
           branchId: { $in: branches },
         },
@@ -30,9 +33,6 @@ export default class PriceRepository extends MongoRepository {
           cartProducts: { $push: '$productId' },
         },
       },
-      // TODO
-      // { $skip: pagination?.offset },
-      // { $limit: pagination?.limit },
     ]
     const result = await this.aggregate(pipeline)
     return result
