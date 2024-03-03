@@ -41,6 +41,7 @@ export default function BranchMap(props) {
   function MapHooks() {
     const map = useMap();
     changuitoMap.setMap(map);
+    map.invalidateSize();
     map.on("moveend", async (e) => {
       if (!moveEndHandling) {
         moveEndHandling = true;

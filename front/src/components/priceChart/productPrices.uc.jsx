@@ -53,11 +53,11 @@ export default function ProductPrices(props) {
 
       const labels = buildDateLabels(minDate, maxDate);
 
-      const dataset = {
+      const newData = {
         labels,
         datasets: datasets,
       };
-      datasets.push(dataset);
+      setChartData(newData);
     };
 
     async function fetchOptions() {
