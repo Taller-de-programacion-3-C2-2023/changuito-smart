@@ -14,7 +14,7 @@ export default class PriceRepository extends MongoRepository {
   // TODO ver que pasa si no se manda filtro
   public async findByCart(filter: { products?: string[]; branches?: string[] }) {
     const { products, branches } = filter
-    const scrapDate = (await this.status).lastScrap || new Date()
+    const scrapDate = (await this.status).lastScrap || new Date('2023-11-19')
     const pipeline = [
       {
         $match: {

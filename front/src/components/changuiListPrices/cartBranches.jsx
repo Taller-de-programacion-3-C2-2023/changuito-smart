@@ -103,8 +103,7 @@ export default function BranchPricesTable(props) {
   return (
     <div className="changuito-map">
       <h3>
-        {" "}
-        Results with {props.selectedProductList.length} products selected
+        {`Resultados encontrados para ${props.selectedProductList.length} productos seleccionados`}
       </h3>
       <div className="card">
         <Toast ref={toast} />

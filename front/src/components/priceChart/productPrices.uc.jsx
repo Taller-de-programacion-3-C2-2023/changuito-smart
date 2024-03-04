@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Line } from "react-chartjs-2";
 import { Chart as ChartJS, Colors, registerables } from "chart.js";
-import ColumnedContent from "../columnedContents";
 
 ChartJS.register(...registerables);
 ChartJS.register(Colors);
@@ -86,14 +85,5 @@ export default function ProductPrices(props) {
     }
   }, []);
 
-  return (
-    <div className="Container">
-      <ColumnedContent>
-        <div></div>
-        <div className="Page-content">
-          <Line ref={chartRef} data={chartData} />
-        </div>
-      </ColumnedContent>
-    </div>
-  );
+  return <Line ref={chartRef} data={chartData} />;
 }
