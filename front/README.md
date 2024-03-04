@@ -69,19 +69,3 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 
-<<<<<<< HEAD
-=======
-### TODO
-
-- Pasarlo a Espanol, manga de cipayos
-- Poder poner cantidades (3 paquetes de yerba, 2 papas fritas...)
-- Si elijo un producto (yerba mananita de 1kg, por ejemplo) y ese producto esta varias veces entre los datos de una sucursal, me suma todas las apariciones a la lista
-- Empiezo a escribir "dentifrico", cuando voy por la "i" se me borra la entrada de texto (porque no matchea nada en la lista)
-- El mapa esta dificil de usar: se ve gris, no puedo seleccionar un pin, etc (aunque cuando lo mostraba Mati parecia andar bien, cambio reciente?)
-- Cuando voy al mapa desde el cart, desaparecen todos los productos
-- En prices no hay nada -> "historico"? "evolucion"?
-- El otro dia me dijeron que estaba hardcodeado para usarse en CABA.. Como se haria para usar la herramienta en otros lugares? Necesitan mas infra? Por que no esta?
-- El estado del chango pareciera tener que "sobrevivir" al cambio de vista que se produce al cambiar el "tabulador" (cart, map, prices): entonces el tabulador no tendria que cambiar solamente la parte de la derecha?
-
-import { Splitter, SplitterPanel } from "primereact/splitter";?? para el columned
->>>>>>> feat: same product selector for all views
