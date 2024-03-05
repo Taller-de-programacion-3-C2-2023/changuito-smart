@@ -1,4 +1,4 @@
-import Config from "../../config.js";
+import Config from "../config.js";
 import React, { useState, useEffect } from "react";
 import { Dropdown } from "primereact/dropdown";
 import { DataScroller } from "primereact/datascroller";
@@ -59,7 +59,7 @@ export default function CartFilters(props) {
 
   return (
     <>
-      <h3> Create your cart</h3>
+      <h3> Selecciona los productos de tu changuito</h3>
       <Dropdown
         // value={selectedProductList}
         onChange={onProductSelection}
@@ -67,14 +67,17 @@ export default function CartFilters(props) {
         optionLabel="name"
         filter
         showFilterClear
-        onFilter={(e) => setProductFilter(e.filter)}
+        onFilter={(e) => {
+          console.log(">>>>> ", e.filter);
+          setProductFilter(e.filter);
+        }}
         virtualScrollerOptions={{ itemSize: 38 }}
-        placeholder="...producto"
+        placeholder="Selecciona producto"
         className="flex align-items-center padding:30px"
       />
       <div className="card">
         <DataScroller
-          header="Productos seleccionados"
+          header="Mi changuito"
           value={props.cartProducts}
           itemTemplate={itemTemplate}
           rows={5}
