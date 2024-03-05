@@ -16,7 +16,9 @@ export default function CartFilters(props) {
         const response = await fetch(`${endpoint}?${queryString}`);
         const json = await response.json();
         console.log("OK: Fetching response:  ", json.length, "  ", queryString);
-        setProducts(json.slice(0, 10));
+        if (json.length) {
+          setProducts(json.slice(0, 10));
+        }
       }
       try {
         fetchOptions();
@@ -74,6 +76,7 @@ export default function CartFilters(props) {
         virtualScrollerOptions={{ itemSize: 38 }}
         placeholder="Selecciona producto"
         className="flex align-items-center padding:30px"
+        emptyFilterMessage="No hay produtos disponibles"
       />
       <div className="card">
         <DataScroller
