@@ -36,8 +36,6 @@ export class ProductScrapper {
         this.ui.updateBranchCounter(curBranch);
         this.ui.render();
     }
-    const productCollection = this.db.collection(MONGO.COLLECTION.PRODUCTS)
-    await productCollection.createIndex({ name: 'text' })
     return { success: true, products: products }
   }
 
