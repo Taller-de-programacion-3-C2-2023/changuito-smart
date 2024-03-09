@@ -44,7 +44,7 @@ export default function ProductPrices(props) {
         });
         const dataset = {
           label: "case " + record._id,
-          data: prices,
+          data: prices,  /// las coordenadas 
           borderWidth: 1,
         };
         datasets.push(dataset);
@@ -53,8 +53,8 @@ export default function ProductPrices(props) {
       const labels = buildDateLabels(minDate, maxDate);
 
       const newData = {
-        labels,
-        datasets: datasets,
+        labels,  // quiero que se muestr 11/12/333
+        datasets: datasets,  // es cada punto del grafico en formato de coordenadas
       };
       setChartData(newData);
     };

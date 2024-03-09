@@ -4,7 +4,7 @@ export const SCRAP = {
   BRANCH_ENDPOINT: '/sucursales?limit=30',
   CONCURRENT_QUERIES: process.env.CONCURRENT_QUERIES || 6,
   BRANCH_LIMIT: 20,
-  BRANCH_CENTER: [-58.3776, -34.6109]
+  BRANCH_CENTER: [-58.3776, -34.6109] // If specifying latitude and longitude coordinates, list the longitude first, and then latitude.
 }
 
 export const MONGO = {

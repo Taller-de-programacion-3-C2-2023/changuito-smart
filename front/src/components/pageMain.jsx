@@ -15,7 +15,7 @@ export default function Main(props) {
 
   function addSelectedProduct(productSelected) {
     setCartProducts(cartProducts.concat(productSelected));
-    console.info(cartProducts);
+    console.info("cartProducts:    ",cartProducts);
   }
 
   function removeSelectedProduct(productSelected) {
