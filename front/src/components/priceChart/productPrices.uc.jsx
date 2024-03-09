@@ -20,37 +20,36 @@ export default function ProductPrices(props) {
 
   function buildDateLabels(minDate, maxDate) {
     const labels = [];
+    let curDate = new Date(minDate);
 
-    while (minDate <= maxDate) {
+    while (curDate <= maxDate) {
       const dateLabel = minDate.toISOString().split("T")[0];
       labels.push(dateLabel);
-      minDate.setDate(minDate.getDate() + 1);
+      curDate.setDate(curDate.getDate() + 1);
     }
     return labels;
   }
 
   useEffect(function effectFunction() {
     const updatePriceRecord = (data) => {
+      const nameMap = {}
+      props.selectedProductList.forEach(prod => nameMap[prod.id] = prod.name)
       const datasets = [];
-      let minDate = new Date();
-      let maxDate = new Date();
       for (const record of data) {
         const prices = record.prices.map((price) => {
           const priceDate = new Date(price.date);
-          minDate = minDate < priceDate ? minDate : priceDate;
-          maxDate = maxDate > priceDate ? maxDate : priceDate;
           const dateLabel = priceDate.toISOString().split("T")[0];
           return { x: dateLabel, y: price.price };
         });
         const dataset = {
-          label: "case " + record._id,
+          label: nameMap[record._id],
           data: prices,  /// las coordenadas 
           borderWidth: 1,
         };
         datasets.push(dataset);
       }
 
-      const labels = buildDateLabels(minDate, maxDate);
+      const labels = buildDateLabels(props.filterDates[0], props.filterDates[1]);
 
       const newData = {
         labels,  // quiero que se muestr 11/12/333
@@ -61,13 +60,11 @@ export default function ProductPrices(props) {
 
     async function fetchOptions() {
       const endpoint = `http://localhost:3030/prices/record`;
-      const fromDate = "2024-03-01";
-      const toDate = "2024-03-04";
-      const selectedProductList = [
-        { id: 7791675909196 },
-        { id: 7795735000328 },
-      ];
-      const queryProductString = selectedProductList.reduce(
+      const fromDate = props.filterDates[0];
+      const toDate = props.filterDates[1];
+      console.log(`fromDate ${fromDate}, toDate ${toDate}`)
+
+      const queryProductString = props.selectedProductList.reduce(
         (prev, cur) => `${prev}&products=${cur.id}`,
         ""
       );
@@ -83,7 +80,7 @@ export default function ProductPrices(props) {
     } catch (err) {
       console.log("ERROR: Fetching error");
     }
-  }, []);
+  }, [props.selectedProductList, props.filterDates]);
 
   return <Line ref={chartRef} data={chartData} />;
 }

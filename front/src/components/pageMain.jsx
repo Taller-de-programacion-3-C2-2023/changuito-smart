@@ -1,17 +1,22 @@
 import "../App.css";
+
 import React, { useState } from "react";
 import { TabMenu } from "primereact/tabmenu";
-// import PriceMap from "./priceMap/priceMap.uc";
-// import UseCaseList from "./changuiListPrices/cartPrices.uc";
 import ProductPrices from "./priceChart/productPrices.uc";
 import CartFilters from "./cartFilters";
 import ColumnedContent from "./columnedContents";
 import BranchPricesTable from "./changuiListPrices/cartBranches";
+import DateFilter from "./dateFilter";
 import BranchMap from "./priceMap/branchMap"
 
 export default function Main(props) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [cartProducts, setCartProducts] = useState([]);
+
+  const today = new Date();
+  const lastWeek = new Date()
+  lastWeek.setDate(today.getDate() - 7);
+  const [filterDates, setFilterDates] = useState([lastWeek, today]);
 
   function addSelectedProduct(productSelected) {
     setCartProducts(cartProducts.concat(productSelected));
@@ -46,15 +51,20 @@ export default function Main(props) {
         onTabChange={(e) => setActiveIndex(e.index)}
       />
       <ColumnedContent>
+        <div>
         <CartFilters
           onUnselected={removeSelectedProduct}
           onSelected={addSelectedProduct}
           cartProducts={cartProducts}
         ></CartFilters>
+        {activeIndex === 2 &&
+          <DateFilter onDateChanged={setFilterDates}/>
+        }
+        </div>
         <div className="Container">
           {activeIndex === 0 && <BranchPricesTable selectedProductList={cartProducts} />}
           {activeIndex === 1 && <BranchMap selectedProductList={cartProducts} />}
-          {activeIndex === 2 && <ProductPrices />}
+          {activeIndex === 2 && <ProductPrices selectedProductList={cartProducts} filterDates={filterDates} />}
         </div>
         
       </ColumnedContent>
