@@ -19,6 +19,7 @@ export class ProductScrapper {
     let branches
     try {
       branches = await scrapper.getBranches()
+      console.log("Branches ", branches.length)
     } catch (e) {
       console.log('Failed to query branches: ', e)
       return
