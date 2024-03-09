@@ -37,7 +37,6 @@ export default function CartFilters(props) {
         //     "brand": "NUCETE"
         //   }
         // ]
-        setProducts(json.slice(0, 10));
       }
       try {
         fetchOptions();
