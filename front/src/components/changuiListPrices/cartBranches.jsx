@@ -263,7 +263,7 @@ export default function BranchPricesTable(props) {
           <Column
             style={{ minWidth: '8rem' }}
             field="price"
-            header="total"
+            header="Precio total"
             body={(p) => formatCurrency(p.price * p.quantity)}
             sortable
           ></Column>
