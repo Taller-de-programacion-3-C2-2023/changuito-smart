@@ -315,6 +315,8 @@ export default function BranchPricesTable(props) {
           dataKey="_id"
           scrollable
           scrollHeight="500px"
+          sortField="cartLength" sortOrder={-1}
+          // sortMode="multiple"  TODO no entiendo bien como funciona, a veces no me funciona el sort del precio
         >
           <Column expander={allowExpansion} style={{ width: "5rem" }} />
           <Column
@@ -322,23 +324,19 @@ export default function BranchPricesTable(props) {
             field="branch.banderaDescripcion"
             header="Sucursal"
             sortable
+            filter filterPlaceholder="Buscar por sucursal" 
           ></Column>
           <Column style={{ minWidth: '18rem' }} field="branch.direccion" header="Direccion"></Column>
           <Column style={{ minWidth: '18rem' }} field="branch.localidad" header="Localidad"></Column>
-          <Column
-            style={{ minWidth: '10rem' }}
-            field="cartPrice"
-            header="Total unitario"
-            body={(p) => formatCurrency(p.cartPrice)}
-            sortable
-          ></Column>
           <Column
             style={{ minWidth: '10rem' }}
             header="Precio"
             body={(p) => formatCurrency(p.cartProducts.reduce((prev, curr) => prev += productQuantities[curr.productId] * curr.price, 0))}
             sortable
           ></Column>
-          <Column style={{ maxWidth: '5rem' }} header={<Checkbox disabled></Checkbox>}
+          <Column style={{ maxWidth: '6rem' }}
+            sortField="cartLength"
+            sortable
             body={cartCompleteBodyTemplate}
             />
         </DataTable>
