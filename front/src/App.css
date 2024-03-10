@@ -64,6 +64,16 @@
   box-shadow: 0 0 10px rgb(255, 255, 255); /* Sombra del contenedor */
 }
 
+.CartProducts{
+  margin: 0 auto; /* Centrar el contenedor horizontalmente */
+  padding: 10px; /* Espaciado interno del contenedor */
+  
+  border-radius: 8px; /* Radio de borde para redondear las esquinas */
+  
+  /* display: flex; */
+  flex-direction: column;
+}
+
 .columned-result{
     height: 650px;
     width: 100%;
@@ -72,6 +82,11 @@
 .changuito-map {
     height: 650px;
     width: 100%;
+}
+
+.Result-size{
+  height: 650px;
+  width: 100%;
 }
 
 .right {

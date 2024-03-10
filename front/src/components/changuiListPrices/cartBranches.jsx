@@ -5,6 +5,7 @@ import { Column } from "primereact/column";
 import { Toast } from "primereact/toast";
 import { classNames } from 'primereact/utils';
 import { Checkbox } from "primereact/checkbox";
+import { Tag } from 'primereact/tag';
 
 export default function BranchPricesTable(props) {
   const [branchesCart, setBranchesCart] = useState([]);
@@ -270,17 +271,22 @@ export default function BranchPricesTable(props) {
   };
 
   const cartCompleteBodyTemplate = (rowData) => {
+    console.log("cartCompleteBodyTemplate  ", props.selectedProductList.length, rowData.cartProducts)
+  
     const allProducts = rowData.cartProducts.length === props.selectedProductList.length
-    return <i className={classNames('pi', { 'true-icon pi-check-circle': allProducts, 'false-icon pi-times-circle': !allProducts })}>
-      {rowData.cartProducts.length}
-    </i>;
+    return <Tag value rounded severity={allProducts? 'success':'warning'} >
+
+      <i className={classNames('pi', { 'true-icon pi-shopping-cart': allProducts, 'false-icon pi-shopping-cart': !allProducts })}>
+        {` ${rowData.cartProducts.length}`}
+      </i>
+    </Tag>
   };
   const allowExpansion = (rowData) => {
     return rowData.cartProducts.length > 0;
   };
 
   return (
-    <div className="changuito-map">
+    <div className="Container Container-grey Result-size">
       <h3>
         {`Resultados encontrados para ${props.selectedProductList.length} productos seleccionados`}
       </h3>
@@ -328,18 +334,7 @@ export default function BranchPricesTable(props) {
             sortable
           ></Column>
           <Column style={{ maxWidth: '5rem' }} header={<Checkbox disabled></Checkbox>}
-            // dataType="boolean"
-            sortable
             body={cartCompleteBodyTemplate}
-            // filter
-            // filterElement={verifiedRowFilterTemplate} 
-            // body={(data) => {
-            //   if (data.cartProducts.length === props.selectedProductList.length) {
-            //     return (<Tag value rounded icon="pi pi-circle" severity={'success'} ></Tag>)
-            //   }
-            //   else
-            //     return (<Tag rounded icon="pi pi-exclamation-triangle" severity={'warning'}></Tag>)
-            // }}
             />
         </DataTable>
       </div>

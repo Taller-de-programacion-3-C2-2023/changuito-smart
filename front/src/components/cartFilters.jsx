@@ -106,7 +106,7 @@ export default function CartFilters(props) {
         placeholder="Selecciona producto"
         className="flex align-items-center padding:30px"
       />
-      <div className="Container Container-white">
+      <div className="CartProducts">
         <DataScroller
           header="Mi changuito"
           value={props.cartProducts}

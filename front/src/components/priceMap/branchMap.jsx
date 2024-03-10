@@ -54,17 +54,22 @@ export default function BranchMap(props) {
   }
 
   return (
-    <div id="map">
-      <MapContainer
-        className="changuito-map"
-        center={mapCenter}
-        zoom={10}
-        maxZoom={19}
-        scrollWheelZoom={true}
-      >
-        <TileLayer url="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        <MapHooks />
-      </MapContainer>
+    <div id="map" className="Container Container-grey Result-size">
+      <h3>
+        {`Resultados encontrados para los productos seleccionados`}
+      </h3>
+      <div className="Container">
+        <MapContainer
+          className="changuito-map"
+          center={mapCenter}
+          zoom={10}
+          maxZoom={19}
+          scrollWheelZoom={true}
+        >
+          <TileLayer url="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+          <MapHooks />
+        </MapContainer>
+      </div>
     </div>
   );
 }
