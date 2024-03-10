@@ -3,9 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Toast } from "primereact/toast";
-import { Tag } from 'primereact/tag';
 import { classNames } from 'primereact/utils';
-import { TriStateCheckbox } from 'primereact/tristatecheckbox';
 import { Checkbox } from "primereact/checkbox";
 
 export default function BranchPricesTable(props) {
@@ -40,14 +38,6 @@ export default function BranchPricesTable(props) {
         );
         const response = await fetch(`${endpoint}?${queryString}`);
         const json = await response.json();
-        // update quantity
-        // console.log(" JSONJSONSOJOSNS ", json) no funciona, como que se carga con delauy
-        // // p.cartProducts.reduce((prev, curr) => prev += productQuantities[curr.productId] * curr.price, 0)
-        // for (const branch of json) {
-        //   console.log(branch)
-        //   branch["totalPrice"] = branch.cartProducts.reduce((prev, curr) => prev += productQuantities[curr.productId] * curr.price, 0)
-        //   branch.cartProducts = branch.cartProducts.map(p => ({...p , quantity: productQuantities[p.productId]}))
-        // }
         console.log("OK: Fetching response BranchPricesTable: ", json);
         // [
         //   {
