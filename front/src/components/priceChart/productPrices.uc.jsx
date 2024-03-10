@@ -78,7 +78,7 @@ export default function ProductPrices(props) {
     try {
       fetchOptions();
     } catch (err) {
-      console.log("ERROR: Fetching error");
+      console.log("ERROR: Fetching error ProductPrices");
     }
   }, [props.selectedProductList, props.filterDates]);
 

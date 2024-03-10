@@ -4,6 +4,9 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Toast } from "primereact/toast";
 import { Tag } from 'primereact/tag';
+import { classNames } from 'primereact/utils';
+import { TriStateCheckbox } from 'primereact/tristatecheckbox';
+import { Checkbox } from "primereact/checkbox";
 
 export default function BranchPricesTable(props) {
   const [branchesCart, setBranchesCart] = useState([]);
@@ -23,6 +26,9 @@ export default function BranchPricesTable(props) {
       }
 
       async function fetchOptions() {
+        setProductQuantities(productsQuantity())
+        console.log("setProductQuantities  ", productQuantities)
+
         if (!props.selectedProductList.length) {
           setBranchesCart([]);
           return;
@@ -34,7 +40,15 @@ export default function BranchPricesTable(props) {
         );
         const response = await fetch(`${endpoint}?${queryString}`);
         const json = await response.json();
-        console.log("OK: Fetching response: ", json);
+        // update quantity
+        // console.log(" JSONJSONSOJOSNS ", json) no funciona, como que se carga con delauy
+        // // p.cartProducts.reduce((prev, curr) => prev += productQuantities[curr.productId] * curr.price, 0)
+        // for (const branch of json) {
+        //   console.log(branch)
+        //   branch["totalPrice"] = branch.cartProducts.reduce((prev, curr) => prev += productQuantities[curr.productId] * curr.price, 0)
+        //   branch.cartProducts = branch.cartProducts.map(p => ({...p , quantity: productQuantities[p.productId]}))
+        // }
+        console.log("OK: Fetching response BranchPricesTable: ", json);
         // [
         //   {
         //     "_id": "10-3-633",
@@ -186,14 +200,15 @@ export default function BranchPricesTable(props) {
         setBranchesCart(json);
       }
       try {
-        setProductQuantities(productsQuantity())
+        
         fetchOptions();
       } catch (err) {
-        console.log("ERROR: Fetching error on cartBranches");
+        console.log("ERROR: Fetching error on BranchPricesTable");
       }
     },
     [props.selectedProductList]
   );
+  
 
   const header = (
     <div className="flex flex-wrap align-items-center justify-content-between gap-2">
@@ -263,7 +278,13 @@ export default function BranchPricesTable(props) {
       </div>
     );
   };
-  
+
+  const cartCompleteBodyTemplate = (rowData) => {
+    const allProducts = rowData.cartProducts.length === props.selectedProductList.length
+    return <i className={classNames('pi', { 'true-icon pi-check-circle': allProducts, 'false-icon pi-times-circle': !allProducts })}>
+      {rowData.cartProducts.length}
+    </i>;
+  };
   const allowExpansion = (rowData) => {
     return rowData.cartProducts.length > 0;
   };
@@ -273,7 +294,7 @@ export default function BranchPricesTable(props) {
       <h3>
         {`Resultados encontrados para ${props.selectedProductList.length} productos seleccionados`}
       </h3>
-      <div className="card">
+      <div className="Container">
         <Toast ref={toast} />
         <DataTable
           value={branchesCart}
@@ -316,13 +337,20 @@ export default function BranchPricesTable(props) {
             body={(p) => formatCurrency(p.cartProducts.reduce((prev, curr) => prev += productQuantities[curr.productId] * curr.price, 0))}
             sortable
           ></Column>
-          <Column header="Cant"
+          <Column style={{ maxWidth: '5rem' }} header={<Checkbox disabled></Checkbox>}
+            // dataType="boolean"
             sortable
-            body={ (data) =>
-              <Tag value={data.cartProducts.length} rounded
-                severity={data.cartProducts.length === props.selectedProductList.length ? 'success' : 'warning'}>
-                </Tag>
-            } />
+            body={cartCompleteBodyTemplate}
+            // filter
+            // filterElement={verifiedRowFilterTemplate} 
+            // body={(data) => {
+            //   if (data.cartProducts.length === props.selectedProductList.length) {
+            //     return (<Tag value rounded icon="pi pi-circle" severity={'success'} ></Tag>)
+            //   }
+            //   else
+            //     return (<Tag rounded icon="pi pi-exclamation-triangle" severity={'warning'}></Tag>)
+            // }}
+            />
         </DataTable>
       </div>
     </div>

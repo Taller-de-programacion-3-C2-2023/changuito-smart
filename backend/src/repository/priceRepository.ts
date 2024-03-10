@@ -32,6 +32,7 @@ export default class PriceRepository extends MongoRepository {
           cartProducts: { $push: { productId: '$productId', price: '$price' } },
         },
       },
+      { $sort: { '_id': 1 } },
     ]
     const result = await this.aggregate(pipeline)
     return result

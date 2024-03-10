@@ -43,17 +43,26 @@
     margin-right: 10px; /* Espacio entre la imagen y el texto */
   }
 
-
   .Container {
     /* max-width: 1200px; Ancho máximo del contenedor */
     margin: 0 auto; /* Centrar el contenedor horizontalmente */
     padding: 20px; /* Espaciado interno del contenedor */
-    background-color: #f0f0f0; /* Color de fondo del contenedor */
+   
     border-radius: 8px; /* Radio de borde para redondear las esquinas */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra del contenedor */
+   
     /* display: flex; */
     flex-direction: column;
   }
+
+.Container-grey{
+  background-color: #f0f0f0; /* Color de fondo del contenedor */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra del contenedor */
+}
+
+.Container-white{
+  background-color: #ffffff; /* Color de fondo del contenedor */
+  box-shadow: 0 0 10px rgb(255, 255, 255); /* Sombra del contenedor */
+}
 
 .columned-result{
     height: 650px;

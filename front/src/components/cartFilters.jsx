@@ -73,6 +73,7 @@ export default function CartFilters(props) {
             value={data.quantity}
             onValueChange={(e) => {
               data.quantity = e.value;
+              props.refresh()
             }}
             showButtons
             buttonLayout="horizontal"
@@ -91,7 +92,7 @@ export default function CartFilters(props) {
   };
 
   return (
-    <>
+    <div className="Container Container-white">
       <h3> Selecciona los productos de tu changuito</h3>
       <Dropdown
         // value={selectedProductList}
@@ -100,15 +101,12 @@ export default function CartFilters(props) {
         optionLabel="name"
         filter
         showFilterClear
-        onFilter={(e) => {
-          console.log(">>>>  filtra por nombre>  ",e.filter)
-          setProductFilter(e.filter);
-        }}
+        onFilter={(e) => setProductFilter(e.filter)}
         virtualScrollerOptions={{ itemSize: 38 }}
         placeholder="Selecciona producto"
         className="flex align-items-center padding:30px"
       />
-      <div className="card">
+      <div className="Container Container-white">
         <DataScroller
           header="Mi changuito"
           value={props.cartProducts}
@@ -125,6 +123,6 @@ export default function CartFilters(props) {
         onSelected={props.addSelectedProduct}
       />
       <ProductCheckList products={props.selectedProductList}></ProductCheckList> */}
-    </>
+    </div>
   );
 }
