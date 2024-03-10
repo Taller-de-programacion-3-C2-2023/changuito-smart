@@ -69,7 +69,15 @@ export default function CartFilters(props) {
             <label htmlFor={data._id} className="font- md:font-light vertical-align-baseline">
               {data.name}
             </label>
-          <InputNumber className="right w-min "
+            {props.ativeMultiplicity? productsQuantity(data): null}
+          
+        </div>
+    );
+  };
+
+
+  function productsQuantity(data) {
+    return (<InputNumber className="right w-min "
             value={data.quantity}
             onValueChange={(e) => {
               data.quantity = e.value;
@@ -86,10 +94,8 @@ export default function CartFilters(props) {
             min={1}
           max={10}
           size={1}
-          />
-        </div>
-    );
-  };
+          />)
+  }
 
   return (
     <div className="Container Container-white">
