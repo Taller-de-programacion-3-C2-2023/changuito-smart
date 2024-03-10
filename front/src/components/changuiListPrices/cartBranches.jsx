@@ -251,15 +251,17 @@ export default function BranchPricesTable(props) {
     return (
       <div className="p-2">
         <DataTable value={productsData} showGridlines size="small">
-          <Column field="name" header="Producto" sortable></Column>
-          <Column field="quantity" header="Cantidad" ></Column>
+          <Column style={{ minWidth: '20rem' }} field="name" header="Producto" sortable></Column>
+          <Column style={{ minWidth: '8rem' }} field="quantity" header="Cantidad" ></Column>
           <Column
+            style={{ minWidth: '8rem' }}
             field="price"
             header="Precio unitario"
             body={(p) => formatCurrency(p.price)}
             sortable
           ></Column>
           <Column
+            style={{ minWidth: '8rem' }}
             field="price"
             header="total"
             body={(p) => formatCurrency(p.price * p.quantity)}
@@ -316,19 +318,22 @@ export default function BranchPricesTable(props) {
         >
           <Column expander={allowExpansion} style={{ width: "5rem" }} />
           <Column
+            style={{ minWidth: '15rem' }}
             field="branch.banderaDescripcion"
             header="Sucursal"
             sortable
           ></Column>
-          <Column field="branch.direccion" header="Direccion"></Column>
-          <Column field="branch.localidad" header="Localidad"></Column>
+          <Column style={{ minWidth: '18rem' }} field="branch.direccion" header="Direccion"></Column>
+          <Column style={{ minWidth: '18rem' }} field="branch.localidad" header="Localidad"></Column>
           <Column
+            style={{ minWidth: '10rem' }}
             field="cartPrice"
             header="Total unitario"
             body={(p) => formatCurrency(p.cartPrice)}
             sortable
           ></Column>
           <Column
+            style={{ minWidth: '10rem' }}
             header="Precio"
             body={(p) => formatCurrency(p.cartProducts.reduce((prev, curr) => prev += productQuantities[curr.productId] * curr.price, 0))}
             sortable
