@@ -9,13 +9,12 @@ export const CartHandler = (dependencies: any) => {
     const { products, date, lon, lat, limit, offset } = request.query
     let safeLon = Number(lon) || locationDefault.lon
     let safeLat = Number(lat) || locationDefault.lat
-    const safeDate = date || new Date().toISOString()
     // si el offset o el limit no se envian se toman los valores por defaut
     const pagination = { ...paginationDefaults, ...(offset && { offset }), ...(limit && { limit }) }
 
     const branches = await branchRepository.findByLocation(safeLon, safeLat, pagination)
     const branchesById = branches.reduce((acc, curr) => ({ ...acc, [curr.id]: curr }), {})
-    const result = await priceRepository.findByCart({ products, branches: Object.keys(branchesById), date: safeDate})
+    const result = await priceRepository.findByCart({ products, branches: Object.keys(branchesById), date})
     return result.map((x) => ({ ...x, branch: branchesById[x._id] }))
   }
 

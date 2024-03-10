@@ -11,13 +11,13 @@ export default class PriceRepository extends MongoRepository {
     return result
   }
 
-  public async findByCart(filter: { products?: string[]; branches?: string[], date? }) {
-    const { products, branches, date } = filter
-    const scrapDateDay: string = (await this.status).lastScrap.toISOString().slice(0,10)
+  public async findByCart(filter: { products?: string[]; branches?: string[], date?: string }) {
+    const { products, branches, date} = filter
+    const dateFilter: string =  date? date : (await this.status).lastScrap.toISOString().slice(0,10)
     const pipeline = [
       {
         $match: {
-          date: { $gte: new Date(scrapDateDay) },
+          date: { $gte: new Date(dateFilter) },
           productId: { $in: products },
           branchId: { $in: branches },
         },
