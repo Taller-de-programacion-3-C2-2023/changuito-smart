@@ -23,7 +23,7 @@ export default function ProductPrices(props) {
     let curDate = new Date(minDate);
 
     while (curDate <= maxDate) {
-      const dateLabel = minDate.toISOString().split("T")[0];
+      const dateLabel = curDate.toISOString().split("T")[0];
       labels.push(dateLabel);
       curDate.setDate(curDate.getDate() + 1);
     }

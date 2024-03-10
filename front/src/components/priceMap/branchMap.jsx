@@ -32,7 +32,7 @@ export default function BranchMap(props) {
       try {
         updateMap();
       } catch (err) {
-        console.log("ERROR: Fetching error");
+        console.log("ERROR: Fetching error", err);
       }
     },
     [props.selectedProductList]
@@ -41,6 +41,7 @@ export default function BranchMap(props) {
   function MapHooks() {
     const map = useMap();
     changuitoMap.setMap(map);
+    changuitoMap.locate();
     map.invalidateSize();
     map.on("moveend", async (e) => {
       if (!moveEndHandling) {

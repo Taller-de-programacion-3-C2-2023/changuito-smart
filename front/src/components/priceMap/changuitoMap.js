@@ -20,7 +20,10 @@ export class ChanguitoMap {
   setMap(map) {
     this.map = map;
     this.map.on("locationfound", (e) => {
-      this.onLocationFound(e);
+      this.map.panTo([e.latitude, e.longitude]);
+      if (this.onLocationFound) {
+        this.onLocationFound(e);
+      }
     });
     this.map.on("locationerror", (e) => {
       this.onLocationError(e);
@@ -29,10 +32,6 @@ export class ChanguitoMap {
 
   locate() {
     this.map.locate();
-  }
-
-  onLocationFound(e) {
-    this.map.panTo([e.latitude, e.longitude]);
   }
 
   onLocationError(e) {
