@@ -20,11 +20,19 @@ export default function Main(props) {
 
   function addSelectedProduct(productSelected) {
     setCartProducts(cartProducts.concat(productSelected));
-    console.info("cartProducts:    ",cartProducts);
   }
 
   function removeSelectedProduct(productSelected) {
     setCartProducts(cartProducts.filter((x) => x._id !== productSelected._id));
+  }
+
+  function refresh() {
+    //todo optimizar deep copy
+    setCartProducts(JSON.parse(JSON.stringify(cartProducts)));
+  }
+
+  function cleanProducts() {
+    setCartProducts([]);
   }
 
   const menuItems = [
@@ -55,13 +63,15 @@ export default function Main(props) {
         <CartFilters
           onUnselected={removeSelectedProduct}
           onSelected={addSelectedProduct}
-          cartProducts={cartProducts}
+            cartProducts={cartProducts}
+            refresh={refresh}
+            clean={cleanProducts}
         ></CartFilters>
         {activeIndex === 2 &&
           <DateFilter onDateChanged={setFilterDates}/>
         }
         </div>
-        <div className="Container">
+        <div className="Container-grey">
           {activeIndex === 0 && <BranchPricesTable selectedProductList={cartProducts} />}
           {activeIndex === 1 && <BranchMap selectedProductList={cartProducts} />}
           {activeIndex === 2 && <ProductPrices selectedProductList={cartProducts} filterDates={filterDates} />}

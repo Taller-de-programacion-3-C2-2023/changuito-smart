@@ -78,9 +78,18 @@ export default function ProductPrices(props) {
     try {
       fetchOptions();
     } catch (err) {
-      console.log("ERROR: Fetching error");
+      console.log("ERROR: Fetching error ProductPrices");
     }
   }, [props.selectedProductList, props.filterDates]);
 
-  return <Line ref={chartRef} data={chartData} />;
+  return (
+    <div className="Container Container-grey Result-size" >
+      <h3>
+        {`Resultados encontrados para los productos seleccionados`}
+      </h3>
+      <div className="Container">
+        <Line ref={chartRef} data={chartData} />
+      </div>
+    </div>
+  )
 }

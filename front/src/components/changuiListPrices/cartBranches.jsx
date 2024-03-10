@@ -3,6 +3,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Toast } from "primereact/toast";
+import { classNames } from 'primereact/utils';
+import { Checkbox } from "primereact/checkbox";
 import { Tag } from 'primereact/tag';
 
 export default function BranchPricesTable(props) {
@@ -23,6 +25,9 @@ export default function BranchPricesTable(props) {
       }
 
       async function fetchOptions() {
+        setProductQuantities(productsQuantity())
+        console.log("setProductQuantities  ", productQuantities)
+
         if (!props.selectedProductList.length) {
           setBranchesCart([]);
           return;
@@ -34,7 +39,7 @@ export default function BranchPricesTable(props) {
         );
         const response = await fetch(`${endpoint}?${queryString}`);
         const json = await response.json();
-        console.log("OK: Fetching response: ", json);
+        console.log("OK: Fetching response BranchPricesTable: ", json);
         // [
         //   {
         //     "_id": "10-3-633",
@@ -186,14 +191,15 @@ export default function BranchPricesTable(props) {
         setBranchesCart(json);
       }
       try {
-        setProductQuantities(productsQuantity())
+        
         fetchOptions();
       } catch (err) {
-        console.log("ERROR: Fetching error on cartBranches");
+        console.log("ERROR: Fetching error on BranchPricesTable");
       }
     },
     [props.selectedProductList]
   );
+  
 
   const header = (
     <div className="flex flex-wrap align-items-center justify-content-between gap-2">
@@ -245,17 +251,19 @@ export default function BranchPricesTable(props) {
     return (
       <div className="p-2">
         <DataTable value={productsData} showGridlines size="small">
-          <Column field="name" header="Producto" sortable></Column>
-          <Column field="quantity" header="Cantidad" ></Column>
+          <Column style={{ minWidth: '20rem' }} field="name" header="Producto" sortable></Column>
+          <Column style={{ minWidth: '8rem' }} field="quantity" header="Cantidad" ></Column>
           <Column
+            style={{ minWidth: '8rem' }}
             field="price"
             header="Precio unitario"
             body={(p) => formatCurrency(p.price)}
             sortable
           ></Column>
           <Column
+            style={{ minWidth: '8rem' }}
             field="price"
-            header="total"
+            header="Precio total"
             body={(p) => formatCurrency(p.price * p.quantity)}
             sortable
           ></Column>
@@ -263,17 +271,28 @@ export default function BranchPricesTable(props) {
       </div>
     );
   };
+
+  const cartCompleteBodyTemplate = (rowData) => {
+    console.log("cartCompleteBodyTemplate  ", props.selectedProductList.length, rowData.cartProducts)
   
+    const allProducts = rowData.cartProducts.length === props.selectedProductList.length
+    return <Tag value rounded severity={allProducts? 'success':'warning'} >
+
+      <i className={classNames('pi', { 'true-icon pi-shopping-cart': allProducts, 'false-icon pi-shopping-cart': !allProducts })}>
+        {` ${rowData.cartProducts.length}`}
+      </i>
+    </Tag>
+  };
   const allowExpansion = (rowData) => {
     return rowData.cartProducts.length > 0;
   };
 
   return (
-    <div className="changuito-map">
+    <div className="Container Container-grey Result-size">
       <h3>
         {`Resultados encontrados para ${props.selectedProductList.length} productos seleccionados`}
       </h3>
-      <div className="card">
+      <div className="Container">
         <Toast ref={toast} />
         <DataTable
           value={branchesCart}
@@ -299,30 +318,29 @@ export default function BranchPricesTable(props) {
         >
           <Column expander={allowExpansion} style={{ width: "5rem" }} />
           <Column
+            style={{ minWidth: '15rem' }}
             field="branch.banderaDescripcion"
             header="Sucursal"
             sortable
           ></Column>
-          <Column field="branch.direccion" header="Direccion"></Column>
-          <Column field="branch.localidad" header="Localidad"></Column>
+          <Column style={{ minWidth: '18rem' }} field="branch.direccion" header="Direccion"></Column>
+          <Column style={{ minWidth: '18rem' }} field="branch.localidad" header="Localidad"></Column>
           <Column
+            style={{ minWidth: '10rem' }}
             field="cartPrice"
             header="Total unitario"
             body={(p) => formatCurrency(p.cartPrice)}
             sortable
           ></Column>
           <Column
+            style={{ minWidth: '10rem' }}
             header="Precio"
             body={(p) => formatCurrency(p.cartProducts.reduce((prev, curr) => prev += productQuantities[curr.productId] * curr.price, 0))}
             sortable
           ></Column>
-          <Column header="Cant"
-            sortable
-            body={ (data) =>
-              <Tag value={data.cartProducts.length} rounded
-                severity={data.cartProducts.length === props.selectedProductList.length ? 'success' : 'warning'}>
-                </Tag>
-            } />
+          <Column style={{ maxWidth: '5rem' }} header={<Checkbox disabled></Checkbox>}
+            body={cartCompleteBodyTemplate}
+            />
         </DataTable>
       </div>
     </div>

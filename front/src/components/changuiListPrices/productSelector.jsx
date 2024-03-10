@@ -12,13 +12,13 @@ export default function ProductSelector(props) {
         const queryString = `name=${productSearched}`;
         const response = await fetch(`${endpoint}?${queryString}`);
         const json = await response.json();
-        console.log("OK: Fetching response: ", json);
+        console.log("OK: Fetching response: ProductSelector ", json);
         setProductsList(json);
       }
       try {
         fetchOptions();
       } catch (err) {
-        console.log("ERROR: Fetching error");
+        console.log("ERROR: Fetching error ProductSelector");
       }
     },
     [productSearched]

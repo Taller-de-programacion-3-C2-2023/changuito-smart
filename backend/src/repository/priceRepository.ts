@@ -11,14 +11,13 @@ export default class PriceRepository extends MongoRepository {
     return result
   }
 
-  // TODO ver que pasa si no se manda filtro
-  public async findByCart(filter: { products?: string[]; branches?: string[] }) {
-    const { products, branches } = filter
-    const scrapDate = (await this.status).lastScrap || new Date('2023-11-19')
+  public async findByCart(filter: { products?: string[]; branches?: string[], date?: string }) {
+    const { products, branches, date} = filter
+    const dateFilter: string =  date? date : (await this.status).lastScrap.toISOString().slice(0,10)
     const pipeline = [
       {
         $match: {
-          date: { $gte: scrapDate },
+          date: { $gte: new Date(dateFilter) },
           productId: { $in: products },
           branchId: { $in: branches },
         },
@@ -32,6 +31,7 @@ export default class PriceRepository extends MongoRepository {
           cartProducts: { $push: { productId: '$productId', price: '$price' } },
         },
       },
+      { $sort: { '_id': 1 } },
     ]
     const result = await this.aggregate(pipeline)
     return result
