@@ -4,12 +4,14 @@ import React, { useState } from "react";
 import { TabMenu } from "primereact/tabmenu";
 import ProductPrices from "./priceChart/productPrices.uc";
 import CartFilters from "./cartFilters";
+import ToastLocation from "./toastLocation";
 import ColumnedContent from "./columnedContents";
 import BranchPricesTable from "./changuiListPrices/cartBranches";
 import DateFilter from "./dateFilter";
 import BranchMap from "./priceMap/branchMap"
 
 export default function Main(props) {
+  const [location, setLocation] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [cartProducts, setCartProducts] = useState([]);
 
@@ -35,6 +37,20 @@ export default function Main(props) {
     setCartProducts([]);
   }
 
+  function acceptSetLocationClick() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => { 
+          const {latitude, longitude} = position.coords
+          setLocation({ latitude, longitude })
+          console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+        },
+        () => console.log("Unable to retrieve your location"));
+    } else {
+      console.log("Geolocation not supported");
+    }
+  }
+
   const menuItems = [
     {
       label: "Lista de precios",
@@ -52,6 +68,8 @@ export default function Main(props) {
   ];
 
   return (
+    <>
+    {!location ? <ToastLocation accept={acceptSetLocationClick}/> : null}
     <div className="Main">
       <TabMenu
         model={menuItems}
@@ -79,5 +97,6 @@ export default function Main(props) {
         
       </ColumnedContent>
     </div>
+    </>
   );
 }
