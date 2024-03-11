@@ -19,7 +19,7 @@ export default function CartFilters(props) {
         const response = await fetch(`${endpoint}?${queryString}`);
         const json = await response.json();
         if (json.length) {
-          setProducts(json.slice(0, 10));
+          setProducts(json.slice(0, 15));
         }
         // [
         //   {
@@ -124,11 +124,6 @@ export default function CartFilters(props) {
         />
       </div>
 
-      {/* <ProductSelector
-        selectedProductList={props.selectedProductList}
-        onSelected={props.addSelectedProduct}
-      />
-      <ProductCheckList products={props.selectedProductList}></ProductCheckList> */}
     </div>
   );
 }
