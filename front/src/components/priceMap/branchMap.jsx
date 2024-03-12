@@ -35,13 +35,13 @@ export default function BranchMap(props) {
         console.log("ERROR: Fetching error", err);
       }
     },
-    [props.selectedProductList]
+    [props.selectedProductList, props.location]
   );
 
   function MapHooks() {
     const map = useMap();
     changuitoMap.setMap(map);
-    changuitoMap.locate();
+    changuitoMap.locate(props.location);
     map.invalidateSize();
     map.on("moveend", async (e) => {
       if (!moveEndHandling) {

@@ -91,7 +91,7 @@ export default function Main(props) {
         </div>
         <div className="Container-grey">
           {activeIndex === 0 && <BranchPricesTable selectedProductList={cartProducts} />}
-          {activeIndex === 1 && <BranchMap selectedProductList={cartProducts} />}
+          {activeIndex === 1 && <BranchMap selectedProductList={cartProducts} location={location} />}
           {activeIndex === 2 && <ProductPrices selectedProductList={cartProducts} filterDates={filterDates} />}
         </div>
         
