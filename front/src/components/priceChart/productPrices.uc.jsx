@@ -14,10 +14,6 @@ export default function ProductPrices(props) {
   const [chartData, setChartData] = useState(chartDefault);
   const chartRef = useRef();
 
-  function filterUnique(value, index, array) {
-    return array.indexOf(value) === index;
-  }
-
   function buildDateLabels(minDate, maxDate) {
     const labels = [];
     let curDate = new Date(minDate);

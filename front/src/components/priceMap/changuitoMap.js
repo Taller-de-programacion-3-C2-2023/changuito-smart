@@ -65,6 +65,50 @@ export class ChanguitoMap {
     );
     const branches = await branchesResponse.json();
     console.log("Got branches:", branches);
+    // [
+    //   {
+    //     "_id": "4-1-289",
+    //     "cartPrice": 740,
+    //     "cartLength": 1,
+    //     "cartProducts": [
+    //       {
+    //         "productId": "7798260050226",
+    //         "price": 740
+    //       }
+    //     ],
+    //     "branch": {
+    //       "_id": "65ec7967934334f0014b2edb",
+    //       "banderaId": 1,
+    //       "sucursalNombre": "LIMA",
+    //       "id": "4-1-289",
+    //       "sucursalTipo": "Autoservicio",
+    //       "provincia": "AR-C",
+    //       "direccion": "Lima 899",
+    //       "banderaDescripcion": "ESTACION LIMA S.A.",
+    //       "localidad": "CAPITAL FEDERAL",
+    //       "comercioRazonSocial": "Estación Lima S.A.",
+    //       "comercioId": 4,
+    //       "sucursalId": "289",
+    //       "location": {
+    //         "type": "Point",
+    //         "coordinates": [
+    //           -58.38147,
+    //           -34.617902
+    //         ]
+    //       },
+    //       "dist": {
+    //         "calculated": 15793.149854922538,
+    //         "location": {
+    //           "type": "Point",
+    //           "coordinates": [
+    //             -58.38147,
+    //             -34.617902
+    //           ]
+    //         }
+    //       }
+    //     }
+    //   }
+    // ]
     const closestBranches = branches.slice(0, 10);
 
     this.centerMarker = new L.marker(this.centerCoords).addTo(this.map);

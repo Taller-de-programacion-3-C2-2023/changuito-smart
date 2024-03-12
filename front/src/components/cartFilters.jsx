@@ -19,7 +19,7 @@ export default function CartFilters(props) {
         const response = await fetch(`${endpoint}?${queryString}`);
         const json = await response.json();
         if (json.length) {
-          setProducts(json.slice(0, 10));
+          setProducts(json.slice(0, 15));
         }
         // [
         //   {
@@ -69,7 +69,15 @@ export default function CartFilters(props) {
             <label htmlFor={data._id} className="font- md:font-light vertical-align-baseline">
               {data.name}
             </label>
-          <InputNumber className="right w-min "
+            {props.activeMultiplicity? productsQuantity(data): null}
+          
+        </div>
+    );
+  };
+
+
+  function productsQuantity(data) {
+    return (<InputNumber className="right w-min "
             value={data.quantity}
             onValueChange={(e) => {
               data.quantity = e.value;
@@ -86,10 +94,8 @@ export default function CartFilters(props) {
             min={1}
           max={10}
           size={1}
-          />
-        </div>
-    );
-  };
+          />)
+  }
 
   return (
     <div className="Container Container-white">
@@ -118,11 +124,6 @@ export default function CartFilters(props) {
         />
       </div>
 
-      {/* <ProductSelector
-        selectedProductList={props.selectedProductList}
-        onSelected={props.addSelectedProduct}
-      />
-      <ProductCheckList products={props.selectedProductList}></ProductCheckList> */}
     </div>
   );
 }
