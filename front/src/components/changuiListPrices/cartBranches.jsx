@@ -4,7 +4,6 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Toast } from "primereact/toast";
 import { classNames } from 'primereact/utils';
-import { Checkbox } from "primereact/checkbox";
 import { Tag } from 'primereact/tag';
 
 export default function BranchPricesTable(props) {

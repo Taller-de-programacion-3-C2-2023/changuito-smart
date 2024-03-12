@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 import { useContainerDimensions } from "./helpers/useContainerDimensions.js";
 import { Container, Section, Bar } from "@column-resizer/react";
-import { Splitter, SplitterPanel } from "primereact/splitter";
 
 export default function Column(props) {
   const componentRef = useRef();

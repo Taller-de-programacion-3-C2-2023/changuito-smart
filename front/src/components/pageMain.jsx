@@ -66,7 +66,7 @@ export default function Main(props) {
             cartProducts={cartProducts}
             refresh={refresh}
             clean={cleanProducts}
-            ativeMultiplicity={ !(activeIndex === 2)}
+            activeMultiplicity={ !(activeIndex === 2)}
         ></CartFilters>
         {activeIndex === 2 &&
           <DateFilter onDateChanged={setFilterDates}/>

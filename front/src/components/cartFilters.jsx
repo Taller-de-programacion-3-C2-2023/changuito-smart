@@ -69,7 +69,7 @@ export default function CartFilters(props) {
             <label htmlFor={data._id} className="font- md:font-light vertical-align-baseline">
               {data.name}
             </label>
-            {props.ativeMultiplicity? productsQuantity(data): null}
+            {props.activeMultiplicity? productsQuantity(data): null}
           
         </div>
     );
