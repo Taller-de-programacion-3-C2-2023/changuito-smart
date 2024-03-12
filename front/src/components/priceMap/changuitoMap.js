@@ -30,8 +30,12 @@ export class ChanguitoMap {
     });
   }
 
-  locate() {
-    this.map.locate();
+  locate(curLocation) {
+    if (curLocation) {
+      this.onMoveEnd([curLocation.latitude, curLocation.longitude]);
+    } else {
+      this.map.locate();
+    }
   }
 
   onLocationError(e) {
