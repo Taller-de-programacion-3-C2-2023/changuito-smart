@@ -13,7 +13,7 @@ export const routes = async (app, _opts) => {
   const { get: branchesGetHandler, postSearch: postSearch } = handlers.BranchHandler(Repositories)
   const { get: getHandler } = handlers.ProductHandler(Repositories)
   const { get: getPrices } = handlers.PriceHandler(Repositories)
-  const { get: getPriceRecords } = handlers.PriceRecordHandler(Repositories)
+  const { get: getPriceRecords, getLastScrapDate } = handlers.PriceRecordHandler(Repositories)
   const { get: getCart } = handlers.CartHandler(Repositories)
 
   app.route({
@@ -49,5 +49,11 @@ export const routes = async (app, _opts) => {
     method: 'GET',
     schema: getCartSchema,
     handler: getCart,
+  })
+
+  app.route({
+    url: '/lastScrapDate',
+    method: 'GET',
+    handler: getLastScrapDate,
   })
 }

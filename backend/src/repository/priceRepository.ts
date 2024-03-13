@@ -66,4 +66,8 @@ export default class PriceRepository extends MongoRepository {
     const result = await this.aggregate(pipeline)
     return result
   }
+
+  public async getLastScrapDate() {
+    return (await this.status).lastScrap.toISOString().slice(0,10)
+  }
 }

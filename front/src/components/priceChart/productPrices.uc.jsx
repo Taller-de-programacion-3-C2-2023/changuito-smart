@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Line } from "react-chartjs-2";
 import { Chart as ChartJS, Colors, registerables } from "chart.js";
+import Config from "../../config.js";
 
 ChartJS.register(...registerables);
 ChartJS.register(Colors);
@@ -55,7 +56,7 @@ export default function ProductPrices(props) {
     };
 
     async function fetchOptions() {
-      const endpoint = `http://localhost:3030/prices/record`;
+      const endpoint = `${Config.apiBase}/prices/record`;
       const fromDate = props.filterDates[0];
       const toDate = props.filterDates[1];
       console.log(`fromDate ${fromDate}, toDate ${toDate}`)
