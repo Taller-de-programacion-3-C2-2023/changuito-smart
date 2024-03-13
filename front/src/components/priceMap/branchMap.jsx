@@ -21,22 +21,22 @@ let moveEndHandling = false;
 export default function BranchMap(props) {
   const [mapCenter, setMapCenter] = useState([-34.6109, -58.3776]);
 
-  useEffect(
-    function effectFunction() {
-      async function updateMap() {
-        const idProducts = props.selectedProductList.map((p) => p.id);
-        changuitoMap.setProduct(idProducts);
-        await changuitoMap.onCenterChanged();
-        console.log("BranchMap   actualizando producto: ", idProducts);
-      }
-      try {
-        updateMap();
-      } catch (err) {
-        console.log("ERROR: Fetching error", err);
-      }
-    },
-    [props.selectedProductList, props.location]
-  );
+  // useEffect(
+  //   function effectFunction() {
+  //     async function updateMap() {
+  //       const idProducts = props.selectedProductList.map((p) => p.id);
+  //       changuitoMap.setProduct(idProducts);
+  //       await changuitoMap.onCenterChanged();
+  //       console.log("BranchMap   actualizando producto: ", idProducts);
+  //     }
+  //     try {
+  //       updateMap();
+  //     } catch (err) {
+  //       console.log("ERROR: Fetching error", err);
+  //     }
+  //   },
+  //   [props.selectedProductList, props.location]
+  // );
 
   function MapHooks() {
     const map = useMap();
@@ -46,7 +46,7 @@ export default function BranchMap(props) {
     map.on("moveend", async (e) => {
       if (!moveEndHandling) {
         moveEndHandling = true;
-        await changuitoMap.onMoveEnd(map.getCenter());
+        await changuitoMap.onMoveEnd(map.getCenter(), props.cartsByBranches);
         moveEndHandling = false;
       }
     });
