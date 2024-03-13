@@ -11,7 +11,12 @@ export const PriceRecordHandler = (dependencies: any) => {
       { products, fromDate: new Date(from), toDate: new Date(to) })
   }
 
+  const getLastScrapDate = async (request: FastifyRequest, reply: FastifyReply) => {
+    return await priceRepository.getLastScrapDate();
+  }
+
   return {
     get: getPriceRecords,
+    getLastScrapDate,
   }
 }
