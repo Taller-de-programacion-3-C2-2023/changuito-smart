@@ -19,7 +19,7 @@ const changuitoMap = new ChanguitoMap();
 let moveEndHandling = false;
 
 export default function BranchMap(props) {
-  const [mapCenter, setMapCenter] = useState([-34.6109, -58.3776]);
+  const [mapCenter, setMapCenter] = useState({ lat: props.location.latitude, lng:props.location.longitude});
 
   // useEffect(
   //   function effectFunction() {

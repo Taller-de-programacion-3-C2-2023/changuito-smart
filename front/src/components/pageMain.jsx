@@ -27,6 +27,21 @@ export default function Main(props) {
   lastWeek.setDate(today.getDate() - 7);
   const [filterDates, setFilterDates] = useState([lastWeek, today]);
 
+  const menuItems = [
+    {
+      label: "Lista de precios",
+      icon: "pi pi-list",
+    },
+    {
+      label: "Mapa de sucursales",
+      icon: "pi pi-map",
+    },
+    {
+      label: "Evolucion de precios",
+      icon: "pi pi-chart-line",
+    }
+  ]
+
   useEffect(
     function effectFunction() {
 
@@ -56,12 +71,10 @@ export default function Main(props) {
           return {  id, name, unitPrice, quantity, total}
         })
         productsByBranches.totalPrice = totalPrice
-        // return productsFullInfo
       }
       
       async function setCarts() {
         if (!cartProducts.length) {
-          console.log("++++++++++ pasa por vacio");
           setCartsByBranches([]);
           return;
         }
@@ -78,7 +91,6 @@ export default function Main(props) {
       }
       try {
         setCarts();
-        console.log("+++++++++++++++++++++PASO POR SET CARTS");
       } catch (err) {
         console.log("ERROR: Fetching error on BranchPricesTable");
       }
@@ -106,72 +118,60 @@ export default function Main(props) {
     setCartProducts(JSON.parse(JSON.stringify(cartProducts)));
   }
 
-  function cleanProducts() {
-    setCartProducts([]);
-  }
-
-  function acceptSetLocationClick() {
+  function setInitialLocation(acceptGetLocation) {
+    if (!acceptGetLocation) {
+      const [latitude, longitude] = [-34.6109, -58.3776]
+      console.log("rejectSetLocationClick [latitude, longitude]", latitude, longitude);
+      setLocation({ latitude, longitude })
+      return 
+    } 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => { 
-          const {latitude, longitude} = position.coords
+          const { latitude, longitude } = position.coords
+          console.log("acceptSetLocationClick [latitude, longitude]", latitude, longitude);
           setLocation({ latitude, longitude })
-          console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
         },
-        () => console.log("Unable to retrieve your location"));
+        () => console.log("Unable to retrieve your location")
+      );
     } else {
-      console.log("Geolocation not supported");
+      console.log("acceptSetLocationClick but Geolocation not supported");
     }
+    console.log("END LOCATION SET");
   }
-
-  const menuItems = [
-    {
-      label: "Lista de precios",
-      icon: "pi pi-list",
-    },
-    {
-      label: "Mapa de sucursales",
-      icon: "pi pi-map",
-    },
-    {
-      label: "Evolucion de precios",
-      icon: "pi pi-chart-line",
-    },
-    //   , icon: 'pi pi-fw pi-home'
-  ];
 
   return (
     <>
-    <Toast ref={warnToast} position="top-center"/> 
-    {!location ? <ToastLocation accept={acceptSetLocationClick}/> : setLocation({ latitude:-34.6109, longitude: -58.3776 })}
-    <div className="Main">
-      <TabMenu
-        model={menuItems}
-        activeIndex={activeIndex}
-        onTabChange={(e) => setActiveIndex(e.index)}
-      />
-      <ColumnedContent>
-        <div>
-        <CartFilters
-          onUnselected={removeSelectedProduct}
-          onSelected={addSelectedProduct}
-            cartProducts={cartProducts}
-            refresh={refresh}
-            clean={cleanProducts}
-            activeMultiplicity={ !(activeIndex === 2)}
-        ></CartFilters>
-        {activeIndex === 2 &&
-          <DateFilter onDateChanged={setFilterDates}/>
-        }
-        </div>
-        <div className="Container-grey">
-          {activeIndex === 0 && <BranchPricesTable cartsByBranches={cartsByBranches} cartProductsLength={cartProducts.length} />}
-          {activeIndex === 1 && <BranchMap cartsByBranches={cartsByBranches} location={location} />}
-          {activeIndex === 2 && <ProductPrices selectedProductList={cartProducts} filterDates={filterDates} />}
-        </div>
-        
-      </ColumnedContent>
-    </div>
+      <Toast ref={warnToast} position="top-center"/> 
+      {!location ? <ToastLocation accept={() => setInitialLocation(true)} reject={() => setInitialLocation(false)}/> : null}
+      <div className="Main">
+        <TabMenu
+          model={menuItems}
+          activeIndex={activeIndex}
+          onTabChange={(e) => setActiveIndex(e.index)}
+        />
+        <ColumnedContent>
+          <div>
+            <CartFilters
+              onUnselected={removeSelectedProduct}
+              onSelected={addSelectedProduct}
+                cartProducts={cartProducts}
+                refresh={refresh}
+                clean={() => setCartProducts([])}
+                activeMultiplicity={ !(activeIndex === 2)}
+            ></CartFilters>
+            {activeIndex === 2 &&
+              <DateFilter onDateChanged={setFilterDates}/>
+            }
+          </div>
+
+          <div className="Container-grey">
+            {activeIndex === 0 && <BranchPricesTable cartsByBranches={cartsByBranches} cartProductsLength={cartProducts.length} />}
+            {activeIndex === 1 && <BranchMap cartsByBranches={cartsByBranches} location={location} />}
+            {activeIndex === 2 && <ProductPrices selectedProductList={cartProducts} filterDates={filterDates} />}
+          </div>
+        </ColumnedContent>
+      </div>
     </>
   );
 }
