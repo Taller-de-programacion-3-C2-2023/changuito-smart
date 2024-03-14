@@ -85,7 +85,7 @@ export default function ProductPrices(props) {
         {`Resultados encontrados para los productos seleccionados`}
       </h3>
       <div className="Container">
-        <Line ref={chartRef} data={chartData} />
+        <Line className="information-result" ref={chartRef} data={chartData} />
       </div>
     </div>
   )

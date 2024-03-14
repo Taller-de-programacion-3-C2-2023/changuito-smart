@@ -10,7 +10,7 @@ import ToastLocation from "./toastLocation";
 import ColumnedContent from "./columnedContents";
 import BranchPricesTable from "./changuiListPrices/cartBranches";
 import DateFilter from "./dateFilter";
-import BranchMap from "./priceMap/branchMap"
+import BranchMap2 from "./priceMap/branchMap2"
 
 const MAX_PRODUCTS_PER_CART = 5;
 
@@ -167,7 +167,7 @@ export default function Main(props) {
 
           <div className="Container-grey">
             {activeIndex === 0 && <BranchPricesTable cartsByBranches={cartsByBranches} cartProductsLength={cartProducts.length} />}
-            {activeIndex === 1 && <BranchMap cartsByBranches={cartsByBranches} location={location} />}
+            {activeIndex === 1 && <BranchMap2 cartsByBranches={cartsByBranches} cartProductsLength={cartProducts.length} location={location} />}
             {activeIndex === 2 && <ProductPrices selectedProductList={cartProducts} filterDates={filterDates} />}
           </div>
         </ColumnedContent>

@@ -301,6 +301,7 @@ export default function BranchPricesTable(props) {
       <div className="Container">
         <Toast ref={toast} />
         <DataTable
+          className="information-result"
           value={props.cartsByBranches}
           header={header}
           footer={footer}
