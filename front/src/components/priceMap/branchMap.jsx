@@ -21,22 +21,22 @@ let moveEndHandling = false;
 export default function BranchMap(props) {
   const [mapCenter, setMapCenter] = useState({ lat: props.location.latitude, lng:props.location.longitude});
 
-  // useEffect(
-  //   function effectFunction() {
-  //     async function updateMap() {
-  //       const idProducts = props.selectedProductList.map((p) => p.id);
-  //       changuitoMap.setProduct(idProducts);
-  //       await changuitoMap.onCenterChanged();
-  //       console.log("BranchMap   actualizando producto: ", idProducts);
-  //     }
-  //     try {
-  //       updateMap();
-  //     } catch (err) {
-  //       console.log("ERROR: Fetching error", err);
-  //     }
-  //   },
-  //   [props.selectedProductList, props.location]
-  // );
+  useEffect(
+    function effectFunction() {
+      async function updateMap() {
+        const idProducts = props.selectedProductList.map((p) => p.id);
+        changuitoMap.setProduct(idProducts);
+        await changuitoMap.onCenterChanged();
+        console.log("BranchMap   actualizando producto: ", idProducts);
+      }
+      try {
+        updateMap();
+      } catch (err) {
+        console.log("ERROR: Fetching error", err);
+      }
+    },
+    [props.selectedProductList, props.location]
+  );
 
   function MapHooks() {
     const map = useMap();

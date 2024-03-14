@@ -2,7 +2,6 @@ import "../App.css";
 
 import React, { useRef, useState, useEffect } from "react";
 import Config from "../config.js";
-import { TabMenu } from "primereact/tabmenu";
 import { Toast } from 'primereact/toast';
 import ProductPrices from "./priceChart/productPrices.uc";
 import CartFilters from "./cartFilters";
@@ -11,6 +10,7 @@ import ColumnedContent from "./columnedContents";
 import BranchPricesTable from "./changuiListPrices/cartBranches";
 import DateFilter from "./dateFilter";
 import BranchMap2 from "./priceMap/branchMap2"
+import ViewMenu from "./viewMenu"
 
 const MAX_PRODUCTS_PER_CART = 5;
 
@@ -27,21 +27,7 @@ export default function Main(props) {
   lastWeek.setDate(today.getDate() - 7);
   const [filterDates, setFilterDates] = useState([lastWeek, today]);
 
-  const menuItems = [
-    {
-      label: "Lista de precios",
-      icon: "pi pi-list",
-    },
-    {
-      label: "Mapa de sucursales",
-      icon: "pi pi-map",
-    },
-    {
-      label: "Evolucion de precios",
-      icon: "pi pi-chart-line",
-    }
-  ]
-
+ 
   useEffect(
     function effectFunction() {
 
@@ -145,11 +131,7 @@ export default function Main(props) {
       <Toast ref={warnToast} position="top-center"/> 
       {!location ? <ToastLocation accept={() => setInitialLocation(true)} reject={() => setInitialLocation(false)}/> : null}
       <div className="Main">
-        <TabMenu
-          model={menuItems}
-          activeIndex={activeIndex}
-          onTabChange={(e) => setActiveIndex(e.index)}
-        />
+        <ViewMenu activeIndex={activeIndex} setActiveIndex={setActiveIndex}></ViewMenu>
         <ColumnedContent>
           <div>
             <CartFilters

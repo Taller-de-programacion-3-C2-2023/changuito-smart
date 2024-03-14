@@ -83,7 +83,8 @@
   box-sizing: border-box; 
   display: block; 
   height: 524px; 
-  width: 1048px;
+  /* width: 1048px; */
+  width: 100%
 }
 
 .Result-size{
@@ -98,11 +99,4 @@
 .p-paginator-current, .p-paginator-element {
   color:  #333;;
   /* background-image:  !important; */
-}
-
-.result-Info{
-  box-sizing: border-box; 
-  display: block; 
-  height: 524px; 
-  width: 1048px;
 }
