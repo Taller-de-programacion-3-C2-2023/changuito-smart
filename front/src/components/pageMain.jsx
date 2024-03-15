@@ -1,7 +1,8 @@
 import "../App.css";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { TabMenu } from "primereact/tabmenu";
+import { Toast } from 'primereact/toast';
 import ProductPrices from "./priceChart/productPrices.uc";
 import CartFilters from "./cartFilters";
 import ToastLocation from "./toastLocation";
@@ -10,10 +11,13 @@ import BranchPricesTable from "./changuiListPrices/cartBranches";
 import DateFilter from "./dateFilter";
 import BranchMap from "./priceMap/branchMap"
 
+const MAX_PRODUCTS_PER_CART = 5;
+
 export default function Main(props) {
   const [location, setLocation] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [cartProducts, setCartProducts] = useState([]);
+  const warnToast = useRef(null);
 
   const today = new Date();
   const lastWeek = new Date()
@@ -21,7 +25,16 @@ export default function Main(props) {
   const [filterDates, setFilterDates] = useState([lastWeek, today]);
 
   function addSelectedProduct(productSelected) {
-    setCartProducts(cartProducts.concat(productSelected));
+    if (cartProducts.length === MAX_PRODUCTS_PER_CART) {
+      const toastData = {
+        severity: "error",
+        summary: "Límite de productos alcanzado",
+        detail: "No se puede agregar más productos al carrito"
+      }
+      warnToast.current.show(toastData); 
+    } else {
+      setCartProducts(cartProducts.concat(productSelected));
+    }
   }
 
   function removeSelectedProduct(productSelected) {
@@ -69,6 +82,7 @@ export default function Main(props) {
 
   return (
     <>
+    <Toast ref={warnToast} position="top-center"/> 
     {!location ? <ToastLocation accept={acceptSetLocationClick}/> : null}
     <div className="Main">
       <TabMenu

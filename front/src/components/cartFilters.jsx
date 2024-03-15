@@ -6,6 +6,7 @@ import { Button } from "primereact/button";
 import { InputNumber } from "primereact/inputnumber";
 
 const MAX_PRODUCT = 6;
+const MAX_PRODUCT_OPTIONS = 15;
 
 export default function CartFilters(props) {
   const [products, setProducts] = useState([]);
@@ -17,9 +18,12 @@ export default function CartFilters(props) {
         const endpoint = `${Config.apiBase}/products`;
         const queryString = `name=${productFilter}`;
         const response = await fetch(`${endpoint}?${queryString}`);
-        const json = await response.json();
-        if (json.length) {
-          setProducts(json.slice(0, 15));
+        const reqProducts = await response.json();
+        const optionProducts = reqProducts.filter(option => 
+            props.cartProducts.findIndex(existingProd => option.id === existingProd.id) === -1
+            ).slice(0, MAX_PRODUCT_OPTIONS);
+        if (optionProducts.length) {
+          setProducts(optionProducts);
         }
         // [
         //   {
@@ -44,7 +48,7 @@ export default function CartFilters(props) {
         console.log("ERROR: Fetching error");
       }
     },
-    [productFilter]
+    [productFilter, props.cartProducts]
   );
 
   function onProductSelection(e) {
