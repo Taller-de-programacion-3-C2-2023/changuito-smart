@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "mongo": "node mongo-structure.js",
+    "mongo-indexes": "node mongo-structure.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
