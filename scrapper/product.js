@@ -67,11 +67,13 @@ export class ProductScrapper {
 
   async saveProductsByBranch(branchId, products) {
     if (!products.length) return
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
     const mapped = products.map((prod) => ({
       prices: {
         branchId,
         productId: prod.id,
-        date: new Date(),
+        date: today,
         price: prod.precio,
       },
       product: {
