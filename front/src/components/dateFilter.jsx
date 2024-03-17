@@ -15,7 +15,7 @@ export default function DateFilter(props) {
     }
   }
 
-  return (<div>
+  return (<div className="Container">
     <p> Rango de fechas </p>
     <Calendar value={dates} onChange={(e) => rangeChanged(e.value)} selectionMode="range" readOnlyInput />
     </div>);
