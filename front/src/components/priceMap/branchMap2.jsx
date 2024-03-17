@@ -11,22 +11,9 @@ import {
   Tooltip,
   useMapEvents,
 } from "react-leaflet";
-// import Config from "../../config.js";
 import  PopupContent from "./popupContent";
-// import "leaflet/dist/leaflet.css";
-// import iconMarker from "leaflet/dist/images/marker-icon.png";
-// import iconRetina from "leaflet/dist/images/marker-icon-2x.png";
-// import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import { Icon } from "leaflet";
 
-// L.Icon.Default.mergeOptions({
-//   iconRetinaUrl: iconRetina,
-//   iconUrl: iconMarker,
-//   shadowUrl: iconShadow,
-// });
-
-// const changuitoMap = new ChanguitoMap();
-// let moveEndHandling = false;
 
 export default function BranchMap2(props) {
   const [mapCenter, setMapCenter] = useState({
@@ -54,26 +41,6 @@ export default function BranchMap2(props) {
       shadowSize: [41, 41],
     })
   }
-  const centerMarker = new Icon({
-    
-  });
-
-  const branchIcon = new Icon({
-    iconUrl: "https://unpkg.com/leaflet@1.5.1/dist/images/marker-icon.png",
-    iconSize: [25, 41],
-    iconAnchor: [10, 41],
-    popupAnchor: [2, -40],
-  });
-  // // const branchIcon = new Icon({
-  // //   // className: "pi bold pi-shopping-cart font-size: 5rem bac",
-  // //   iconUrl: require('../../images/cart-icon.png'), //'cart-map-icon',
-  // //   // shadowUrl: 'leaf-shadow.png',
-  // //   iconSize:     [15, 15], // size of the icon
-  // //   // shadowSize:   [50, 64], // size of the shadow
-  // //   iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-  // //   shadowAnchor: [4, 62],  // the same for the shadow
-  // //   popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-  // // });
 
   function MapHooks() {
     const map = useMapEvents({
@@ -102,30 +69,6 @@ export default function BranchMap2(props) {
       //MARKER bindPopup click mouseover -- REEMPLAZO DEL TOOLTIP
     });
     return null;
-  }
-
-  function branchPopUp(cart) {
-    const {
-      banderaDescripcion: branchName,
-      sucursalTipo: branchBrand,
-      dist: { calculated: branchDistance },
-    } = cart.branch;
-    return `<section className="flex p-3 gap-3 w-full bg-black-alpha-90 shadow-2 " style={{ borderRadius: '10px' }}>
-          <i className="pi pi-shopping-cart text-primary-500 text-2xl"></i>
-          <div className="flex flex-column gap-4 w-full">
-              <p className="m-0 font-semibold text-base text-white">${branchName}</p>
-              <p className="m-0 text-base text-white text-700">${branchBrand}</p>
-          </div>
-      </section>`;
-    // <div>
-    //   <div>${branchName}</div>
-    //   (${branchBrand})
-    //   <ul>
-    //     ${cart.cartLength} de ${props.cartProductsLength} productos
-    //   </ul>
-    //   <ul>A ${branchDistance} metros</ul>
-    //   <div>Total: ${cart.totalPrice}</div>
-    // </div>
   }
 
   return (
