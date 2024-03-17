@@ -11,6 +11,7 @@ const MAX_PRODUCT_OPTIONS = 15;
 export default function CartFilters(props) {
   const [products, setProducts] = useState([]);
   const [productFilter, setProductFilter] = useState("");
+  const [renderCount, setRenderCount] = useState(0)
 
   useEffect(
     function effectFunction() {
@@ -44,6 +45,8 @@ export default function CartFilters(props) {
       }
       try {
         fetchOptions();
+        console.log("CartFilters: Fetching ok", renderCount);
+        setRenderCount(renderCount +1)
       } catch (err) {
         console.log("ERROR: Fetching error");
       }
@@ -74,7 +77,6 @@ export default function CartFilters(props) {
               {data.name}
             </label>
             {props.activeMultiplicity? productsQuantity(data): null}
-          
         </div>
     );
   };
@@ -119,7 +121,7 @@ export default function CartFilters(props) {
       <div className="CartProducts">
         <DataScroller
           header="Mi changuito"
-          value={props.cartProducts}
+          value={Object.values(props.cartProducts)}
           itemTemplate={itemTemplate}
           rows={MAX_PRODUCT * 10}
           // inline

@@ -1,8 +1,9 @@
 import { MongoRepository } from './mongoRepository'
+import { mongoDBName } from '.././config'
 
 export default class PriceRepository extends MongoRepository {
   constructor(dbClient: any) {
-    super(dbClient, 'db-changuito', 'prices')
+    super(dbClient, mongoDBName, 'prices')
   }
 
   public async findBy(filter: { products?: string[]; branches?: string[] }) {
@@ -13,11 +14,20 @@ export default class PriceRepository extends MongoRepository {
 
   public async findByCart(filter: { products?: string[]; branches?: string[], date?: string }) {
     const { products, branches, date} = filter
-    const dateFilter: string =  date? date : (await this.status).lastScrap.toISOString().slice(0,10)
+    const dateFilter: string = date? date : (await this.status).lastScrap.toISOString().slice(0,10)
+    const day = 9
+    const customDateS = [`2024-03-${day}`, `2024-03-${day + 1}`]
+    const customDate = [new Date(`2014-01-${day}`), new Date(`2014-01-${day + 1}`)]
+    console.log(customDate)
+    customDate.forEach((d) => d.setHours(0, 0, 0, 0))
     const pipeline = [
       {
         $match: {
-          date: { $gte: new Date(dateFilter) },
+          // date: { $gte: new Date(dateFilter) },
+          date: {
+                  $gt: new Date(customDateS[0]),
+                  $lt: new Date(customDateS[1]),
+              },
           productId: { $in: products },
           branchId: { $in: branches },
         },

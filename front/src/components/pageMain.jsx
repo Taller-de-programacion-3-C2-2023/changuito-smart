@@ -57,6 +57,7 @@ export default function Main(props) {
           return {  id, name, unitPrice, quantity, total}
         })
         productsByBranches.totalPrice = totalPrice
+        productsByBranches.allProducts = cartProducts.length === productsByBranches.cartProducts.length
       }
       
       async function setCarts() {
@@ -101,7 +102,7 @@ export default function Main(props) {
 
   function refresh() {
     //todo optimizar deep copy
-    setCartProducts(JSON.parse(JSON.stringify(cartProducts)));
+    // setCartProducts(JSON.parse(JSON.stringify(cartProducts)));
   }
 
   function setInitialLocation(acceptGetLocation) {
