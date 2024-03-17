@@ -90,12 +90,13 @@ export default function BranchPricesTable(props) {
           sortField="cartLength" sortOrder={-1}
         >
           <Column expander={allowExpansion} style={{ width: "5rem" }} />
-          <Column style={{ minWidth: '15rem' }}
+          <Column style={{ minWidth: '18rem' }}
             field="branch.banderaDescripcion"
             header="Sucursal"
             sortable
             filter filterPlaceholder="Buscar por sucursal" 
           ></Column>
+          <Column style={{ minWidth: '10rem' }} field="branch.sucursalTipo" header="Tipo"></Column>
           <Column style={{ minWidth: '18rem' }} field="branch.direccion" header="Direccion"></Column>
           <Column style={{ minWidth: '18rem' }} field="branch.localidad" header="Localidad"></Column>
           <Column
