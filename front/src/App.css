@@ -7,11 +7,11 @@
 
 
 .Header {
-    background: #ffffff; 
-    /* Otras propiedades de estilo para el encabezado */
-    height: 120px; /* Altura del encabezado */
-    display: flex;
-  }
+  background: #ffffff;
+  /* Otras propiedades de estilo para el encabezado */
+  height: 120px; /* Altura del encabezado */
+  display: flex;
+}
 
 .Main {
     /* max-width: 1200px; Ancho máximo del contenedor */
@@ -22,37 +22,40 @@
 }
 
 .Footer {
-    height: 100px; /* Altura fija del pie de página */
-    background-color: #333;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 120px; 
-
-  }
+  background-color: #333;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 120px;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+}
   
-  .FooterContent {
-    display: flex;
-    align-items: center;
-  }
-  
-  .Logo {
-    width: 50px; /* Tamaño de la imagen */
-    height: auto;
-    margin-right: 10px; /* Espacio entre la imagen y el texto */
-  }
+.FooterContent {
+  display: flex;
+  align-items: center;
+}
 
-  .Container {
-    /* max-width: 1200px; Ancho máximo del contenedor */
-    margin: 0 auto; /* Centrar el contenedor horizontalmente */
-    padding: 20px; /* Espaciado interno del contenedor */
-   
-    border-radius: 8px; /* Radio de borde para redondear las esquinas */
-   
-    /* display: flex; */
-    flex-direction: column;
-  }
+.Logo {
+  width: 50px; /* Tamaño de la imagen */
+  height: auto;
+  margin-right: 10px; /* Espacio entre la imagen y el texto */
+}
+
+.Container {
+  /* max-width: 1200px; Ancho máximo del contenedor */
+  margin: 0 auto; /* Centrar el contenedor horizontalmente */
+  padding: 20px; /* Espaciado interno del contenedor */
+
+  border-radius: 8px; /* Radio de borde para redondear las esquinas */
+
+  /* display: flex; */
+  flex-direction: column;
+}
 
 .Container-grey{
   background-color: #f0f0f0; /* Color de fondo del contenedor */
@@ -81,15 +84,18 @@
 
 .information-result {
   box-sizing: border-box; 
-  display: block; 
-  height: 524px; 
-  /* width: 1048px; */
+  display: block;
+  height: 524px;
   width: 100%
 }
 
 .Result-size{
   height: 650px;
   width: 100%;
+}
+
+.Result-size h3, .Result-size .Container {
+  display: inline;
 }
 
 .right {
