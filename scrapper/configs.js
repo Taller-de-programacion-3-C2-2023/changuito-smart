@@ -1,4 +1,5 @@
 export const SCRAP = {
+  CRON_DATE: process.env.CRON_DATE || "0 0 4 * * *", // Launch at 4 am
   URL_BASE: 'https://d3e6htiiul5ek9.cloudfront.net/prod',
   PRODUCT_ENDPOINT: '/productos?limit=100',
   BRANCH_ENDPOINT: '/sucursales?limit=30',
