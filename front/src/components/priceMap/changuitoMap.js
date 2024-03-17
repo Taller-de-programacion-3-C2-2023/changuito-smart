@@ -9,6 +9,29 @@ async function getBranches(lat, lon, products) {
   return fetch(url);
 }
 
+const myCustomColour = '#583470'
+
+const markerHtmlStyles = `
+  background-color: ${myCustomColour};
+  width: 3rem;
+  height: 3rem;
+  display: block;
+  left: -1.5rem;
+  top: -1.5rem;
+  position: relative;
+  border-radius: 3rem 3rem 0;
+  transform: rotate(45deg);
+  border: 1px solid #FFFFFF`
+
+const icon = L.divIcon({
+  className: "my-custom-pin",
+  iconAnchor: [0, 24],
+  labelAnchor: [-6, 0],
+  popupAnchor: [0, -36],
+  html: `<span style="${markerHtmlStyles}" />`
+})
+
+
 export class ChanguitoMap {
   productsSelected;
   centerCoords;
@@ -43,16 +66,16 @@ export class ChanguitoMap {
     alert("Location access failed.");
   }
 
-  async onMoveEnd(centerCoords) {
+  async onMoveEnd(centerCoords, closestBranches) {
     this.centerCoords = centerCoords;
-    await this.onCenterChanged();
+    await this.onCenterChanged(closestBranches);
   }
 
   setProduct(productsSelected) {
     this.productsSelected = productsSelected;
   }
 
-  async onCenterChanged() {
+  async onCenterChanged(closestBranches) {
     // Check if first render
     if (this.markers !== undefined) {
       console.log("Removing branches");
@@ -69,53 +92,10 @@ export class ChanguitoMap {
     );
     const branches = await branchesResponse.json();
     console.log("Got branches:", branches);
-    // [
-    //   {
-    //     "_id": "4-1-289",
-    //     "cartPrice": 740,
-    //     "cartLength": 1,
-    //     "cartProducts": [
-    //       {
-    //         "productId": "7798260050226",
-    //         "price": 740
-    //       }
-    //     ],
-    //     "branch": {
-    //       "_id": "65ec7967934334f0014b2edb",
-    //       "banderaId": 1,
-    //       "sucursalNombre": "LIMA",
-    //       "id": "4-1-289",
-    //       "sucursalTipo": "Autoservicio",
-    //       "provincia": "AR-C",
-    //       "direccion": "Lima 899",
-    //       "banderaDescripcion": "ESTACION LIMA S.A.",
-    //       "localidad": "CAPITAL FEDERAL",
-    //       "comercioRazonSocial": "Estación Lima S.A.",
-    //       "comercioId": 4,
-    //       "sucursalId": "289",
-    //       "location": {
-    //         "type": "Point",
-    //         "coordinates": [
-    //           -58.38147,
-    //           -34.617902
-    //         ]
-    //       },
-    //       "dist": {
-    //         "calculated": 15793.149854922538,
-    //         "location": {
-    //           "type": "Point",
-    //           "coordinates": [
-    //             -58.38147,
-    //             -34.617902
-    //           ]
-    //         }
-    //       }
-    //     }
-    //   }
-    // ]
     const closestBranches = branches.slice(0, 10);
 
     this.centerMarker = new L.marker(this.centerCoords).addTo(this.map);
+    if (!closestBranches) return
     this.addBranchesMarkers(closestBranches);
   }
 
@@ -133,7 +113,7 @@ export class ChanguitoMap {
       ];
       const content = self.getMarkerContent(marker);
       const popup = L.popup({ autoPan: false }).setContent(content);
-      const lMarker = new L.marker(coords)
+      const lMarker = new L.marker(coords, {icon})
         .bindPopup(popup)
         .on("mouseover", function (e) {
           this.openPopup();
@@ -159,7 +139,7 @@ export class ChanguitoMap {
     return `<div class="mapPopup">
       <div class="branchName">${branchName}</div>
       (${branchBrand})
-      <ul>${productCount} de ${this.productsSelected.length} productos</ul>
+      <ul>${productCount} de ${10} productos</ul>
       <ul>A ${branchDistance} metros</ul>
       <div class="branchTotal">Total: ${branchTotal}</div>
       </div>`;

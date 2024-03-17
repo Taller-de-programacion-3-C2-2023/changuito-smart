@@ -79,9 +79,12 @@
     width: 100%;
 }
 
-.changuito-map {
-    height: 650px;
-    width: 100%;
+.information-result {
+  box-sizing: border-box; 
+  display: block; 
+  height: 524px; 
+  /* width: 1048px; */
+  width: 100%
 }
 
 .Result-size{

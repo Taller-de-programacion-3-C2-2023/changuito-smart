@@ -12,13 +12,14 @@ export default function ToastLocation(props) {
 
     const clear = () => {
         toast.current.clear();
+        props.reject()
         setShowToast(false);
     };
 
     function show() {
         if (!showToast) {
             toast.current.clear();
-            setShowToast(true);
+            setShowToast(false);
             toast.current.show({
                 summary: 'Acceso a su ubicacion',
                 detail: 'La aplicacion necesita acceder a su ubicacion para una mejor experiencia. ',
@@ -31,7 +32,7 @@ export default function ToastLocation(props) {
                             <p className="m-0 text-base text-white text-700">{message.detail}</p>
                             <div className="flex gap-3 mb-3">
                                 <Button label="Aceptar" text className="p-0 font-semibold" severity="success" onClick={props.accept}></Button>
-                                <Button label="Rechazar" text className="p-0 font-semibold"  severity="danger" onClick={clear}></Button>
+                                <Button label="Rechazar" text className="p-0 font-semibold"  severity="danger" onClick={props.reject}></Button>
                             </div>
                         </div>
                     </section>
