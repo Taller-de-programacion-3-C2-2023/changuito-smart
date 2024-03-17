@@ -60,12 +60,12 @@ export default function BranchMap2(props) {
         map.locate();
         console.log("update location :", map.locate().getCenter());
       },
-      moveend: async (e) => {
-        // if (!moveEndHandling) {
-        //   moveEndHandling = true;
-        //   await changuitoMap.onMoveEnd(map.getCenter(), props.cartsByBranches);
-        //   moveEndHandling = false;
-      },
+      // moveend: async (e) => {
+      //   // if (!moveEndHandling) {
+      //   //   moveEndHandling = true;
+      //   //   await changuitoMap.onMoveEnd(map.getCenter(), props.cartsByBranches);
+      //   //   moveEndHandling = false;
+      // },
       //MARKER bindPopup click mouseover -- REEMPLAZO DEL TOOLTIP
     });
     return null;
@@ -84,7 +84,16 @@ export default function BranchMap2(props) {
         >
           <TileLayer url="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
           <Circle center={mapCenter} radius={1000} color={COLORS.CIRCLE} />
-          <Marker position={mapCenter} icon={branchIcons(COLORS.LOCATION_CENTER)} draggable>
+          <Marker position={mapCenter} icon={branchIcons(COLORS.LOCATION_CENTER)} draggable
+          //   eventHandlers={
+          //     {dragend: (event) => {
+          //       console.log("dragend :", event.dist);
+          //       this.locate();
+          //       // setMapCenter(this.getLatLng())
+          //       console.log("update location :", this.locate().getCenter(), this.getLatLng());
+          //     }}
+          // }
+          >
             <Tooltip>Usted esta aqui</Tooltip>
             {/* <Popup></Popup> */}
           </Marker>

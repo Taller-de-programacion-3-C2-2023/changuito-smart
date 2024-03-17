@@ -102,7 +102,7 @@ export default function Main(props) {
 
   function refresh() {
     //todo optimizar deep copy
-    // setCartProducts(JSON.parse(JSON.stringify(cartProducts)));
+    setCartProducts(JSON.parse(JSON.stringify(cartProducts)));
   }
 
   function setInitialLocation(acceptGetLocation) {
