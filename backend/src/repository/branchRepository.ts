@@ -1,8 +1,9 @@
 import { MongoRepository } from './mongoRepository'
+import { mongoDBName } from '.././config'
 
 export default class BranchRepository extends MongoRepository {
   constructor(dbClient: any) {
-    super(dbClient, 'db-changuito', 'branches')
+    super(dbClient, mongoDBName, 'branches')
   }
 
   public async findByLocation(lon: number, lat: number, pagination?: { limit: number; offset: number }) {

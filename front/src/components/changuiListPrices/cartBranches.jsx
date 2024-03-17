@@ -1,14 +1,12 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { Toast } from "primereact/toast";
 import { classNames } from 'primereact/utils';
 import { Tag } from 'primereact/tag';
 import { formatCurrency } from "../helpers/formatCurrency";
 
 export default function BranchPricesTable(props) {
   const [expandedRows, setExpandedRows] = useState();
-  const toast = useRef(null);
 
   const header = (
     <div className="flex flex-wrap align-items-center justify-content-between gap-2">
@@ -20,24 +18,6 @@ export default function BranchPricesTable(props) {
   const footer = `Se encontraron ${
     props.cartsByBranches ? props.cartsByBranches.length : 0
   } sucursales cercanas.`;
-
-  const onRowExpand = (event) => {
-    toast.current.show({
-      severity: "info",
-      summary: "Product Expanded",
-      detail: event.data.name,
-      life: 3000,
-    });
-  };
-
-  const onRowCollapse = (event) => {
-    toast.current.show({
-      severity: "success",
-      summary: "Product Collapsed",
-      detail: event.data.name,
-      life: 3000,
-    });
-  };
 
   const rowExpansionTemplate = (cart) => {
     return (
@@ -87,7 +67,6 @@ export default function BranchPricesTable(props) {
         {`Resultados encontrados para ${props.cartProductsLength} productos seleccionados`}
       </h3>
       <div className="Container">
-        <Toast ref={toast} />
         <DataTable
           className="information-result"
           value={props.cartsByBranches}
@@ -104,8 +83,6 @@ export default function BranchPricesTable(props) {
           onRowToggle={(e) => {
             setExpandedRows(e.data);
           }}
-          onRowExpand={onRowExpand} 
-          onRowCollapse={onRowCollapse}
           rowExpansionTemplate={rowExpansionTemplate}
           dataKey="_id"
           scrollable
@@ -113,12 +90,13 @@ export default function BranchPricesTable(props) {
           sortField="cartLength" sortOrder={-1}
         >
           <Column expander={allowExpansion} style={{ width: "5rem" }} />
-          <Column style={{ minWidth: '15rem' }}
+          <Column style={{ minWidth: '18rem' }}
             field="branch.banderaDescripcion"
             header="Sucursal"
             sortable
             filter filterPlaceholder="Buscar por sucursal" 
           ></Column>
+          <Column style={{ minWidth: '10rem' }} field="branch.sucursalTipo" header="Tipo"></Column>
           <Column style={{ minWidth: '18rem' }} field="branch.direccion" header="Direccion"></Column>
           <Column style={{ minWidth: '18rem' }} field="branch.localidad" header="Localidad"></Column>
           <Column

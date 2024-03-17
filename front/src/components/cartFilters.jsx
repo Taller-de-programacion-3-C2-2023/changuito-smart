@@ -74,7 +74,6 @@ export default function CartFilters(props) {
               {data.name}
             </label>
             {props.activeMultiplicity? productsQuantity(data): null}
-          
         </div>
     );
   };

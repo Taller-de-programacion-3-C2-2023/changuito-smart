@@ -57,6 +57,7 @@ export default function Main(props) {
           return {  id, name, unitPrice, quantity, total}
         })
         productsByBranches.totalPrice = totalPrice
+        productsByBranches.allProducts = cartProducts.length === productsByBranches.cartProducts.length
       }
       
       async function setCarts() {

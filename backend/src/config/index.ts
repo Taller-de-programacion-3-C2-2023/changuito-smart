@@ -19,6 +19,7 @@ export const corsConfig = (_instance?) => (req, callback) => {
 const mongoHost = process.env.MONGO_HOST
 const mongoUsername = process.env.MONGO_USERNAME
 const mongoPassword = process.env.MONGO_PASSWORD
+export const mongoDBName = process.env.MONGO_DB_NAME
 
 export const mongoConfig = {
   url: `mongodb://${mongoUsername}:${mongoPassword}@${mongoHost}:27017/`,
