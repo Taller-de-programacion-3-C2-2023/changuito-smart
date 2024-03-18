@@ -10,13 +10,16 @@ async function setIndexes() {
     await client.connect()
     const db = client.db(MONGO.DB)
 
+    console.log(`Connected ${MONGO.URL}`)
+    
     const products = db.collection(MONGO.COLLECTION.PRODUCTS)
     const productsresult = await products.createIndex({ id: 1 }, { name: "unique_products_id", unique: true })
     console.log(`Index created: ${productsresult}`)
     
     const branches = db.collection(MONGO.COLLECTION.BRANCHES)
     const branchesresult = await branches.createIndex({ id: 1 }, { name: "unique_branches_id", unique: true })
-    console.log(`Index created: ${branchesresult}`)
+    const branchesresult2 = await branches.createIndex({ location: '2dsphere' })
+    console.log(`Index created: ${branchesresult}, ${branchesresult2}`)
     
     const prices = db.collection(MONGO.COLLECTION.PRICES)
     const pricesresult = await prices.createIndex({ branchId:1, productId:1 , date: 1}, { name: "unique_prices", unique: true })

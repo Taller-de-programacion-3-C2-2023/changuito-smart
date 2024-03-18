@@ -3,7 +3,7 @@ import axios from 'axios'
 import fs from 'fs'
 import { MONGO , SCRAP , THROTTLE_SECS } from './configs.js'
 
-const raw_headers = fs.readFileSync('scrapper-headers.json')
+const raw_headers = fs.readFileSync('src/scrapper-headers.json')
 const headers = JSON.parse(raw_headers)
 
 const URL = `${SCRAP.URL_BASE}${SCRAP.PRODUCT_ENDPOINT}`
@@ -85,29 +85,33 @@ export class ProductScrapper {
     }))
     const pricesCollection = this.db.collection(MONGO.COLLECTION.PRICES)
     const prices = mapped.map((x) => x.prices)
-    const result = await pricesCollection.insertMany(prices)
-    //console.log(`insertados ${prices.length} precios`)
+    const result = await pricesCollection.insertMany(prices, {orderer: false})
+    console.log(`insertados ${prices.length} precios`)
 
     const productCollection = this.db.collection(MONGO.COLLECTION.PRODUCTS)
     const productsData = mapped.map((x) => x.product)
-    const options = { ordered: false }
-    const productsDataInserts = await productCollection.insertMany(productsData, options)
-    //console.log(`insertados ${productsData.length} produs`)
+    const productsDataInserts = await productCollection.insertMany(productsData, { ordered: false })
+    console.log(`insertados ${productsData.length} produs`)
   }
 
   async saveProducts(branchProducts) {
-    const productsCol = this.db.collection(MONGO.COLLECTION.PRODUCTS)
-    return productsCol.insertOne(branchProducts)
+  //   try {
+  //     const productsCol = this.db.collection(MONGO.COLLECTION.PRODUCTS)
+  //     return productsCol.insertOne(branchProducts)
+  //  } catch (e) {
+  //     print (e);
+  //  };
   }
 
   async scrapBranch(id) {
     let throttling = false
     let scrapped = false
     let loops = 0;
-    while (!scrapped) {
+    let currentException = null
+    while (!scrapped && loops < 2) {
       try {
         if (throttling) {
-          this.ui.updateStatus(`Branch ${id} failed, waiting ${THROTTLE_SECS} secs to retry... (waited ${loops} times)`)
+          this.ui.updateStatus(`Branch ${id} failed, waiting ${THROTTLE_SECS} secs to retry... (waited ${loops}/2 times) Exception is ${currentException}`)
           this.ui.render();
           await new Promise(resolve => setTimeout(resolve, THROTTLE_SECS * 1000));
           loops++;
@@ -116,6 +120,7 @@ export class ProductScrapper {
         await this.saveProducts(branchProducts);
         scrapped = true;
       } catch (e) {
+        currentException = e;
         throttling = true;
       }
     }

@@ -4,6 +4,8 @@ import { MongoClient } from 'mongodb'
 import { MONGO } from './configs.js'
 import { ScrapperUI } from './tui.js';
 
+// Exception is MongoBulkWriteError: E11000 duplicate key error collection: db-changui
+// to.products index: unique_products_id dup key: { id: "7798260050226" }
 export async function scrap() {
   const client = new MongoClient(MONGO.URL)
   const ui = new ScrapperUI();
