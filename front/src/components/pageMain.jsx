@@ -81,7 +81,7 @@ export default function Main(props) {
       } catch (err) {
         console.log("ERROR: Fetching error on BranchPricesTable");
       }
-  }, [cartProducts])
+  }, [cartProducts, location])
 
   function addSelectedProduct(productSelected) {
     if (cartProducts.length === MAX_PRODUCTS_PER_CART) {
@@ -150,7 +150,7 @@ export default function Main(props) {
 
           <div className="Container-grey">
             {activeIndex === 0 && <BranchPricesTable cartsByBranches={cartsByBranches} cartProductsLength={cartProducts.length} />}
-            {activeIndex === 1 && <BranchMap2 cartsByBranches={cartsByBranches} cartProductsLength={cartProducts.length} location={location} />}
+            {activeIndex === 1 && <BranchMap2 cartsByBranches={cartsByBranches} cartProductsLength={cartProducts.length} location={location} updateLocation={setLocation} />}
             {activeIndex === 2 && <ProductPrices selectedProductList={cartProducts} filterDates={filterDates} />}
           </div>
         </ColumnedContent>

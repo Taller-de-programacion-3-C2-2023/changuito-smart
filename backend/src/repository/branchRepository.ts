@@ -1,5 +1,5 @@
 import { MongoRepository } from './mongoRepository'
-import { mongoDBName } from '.././config'
+import { maxBranchDistance, mongoDBName } from '.././config'
 
 export default class BranchRepository extends MongoRepository {
   constructor(dbClient: any) {
@@ -14,6 +14,7 @@ export default class BranchRepository extends MongoRepository {
           distanceField: 'dist.calculated',
           includeLocs: 'dist.location',
           spherical: true,
+          maxDistance: maxBranchDistance
         },
       },
       { $skip: pagination?.offset },

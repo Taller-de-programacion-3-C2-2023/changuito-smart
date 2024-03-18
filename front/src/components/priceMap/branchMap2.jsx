@@ -1,7 +1,7 @@
 import "leaflet/dist/leaflet.css";
 import "primereact/resources/primereact.css"; // core css
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   MapContainer,
   TileLayer,
@@ -20,6 +20,7 @@ export default function BranchMap2(props) {
     lat: props.location.latitude,
     lng: props.location.longitude,
   });
+  const [centerChange, setCenterChange] = useState(false)
 
 
   const COLORS = {
@@ -49,27 +50,24 @@ export default function BranchMap2(props) {
         map.locate();
         map.setView(mapCenter, map.getZoom() * 1.1);
       },
-      locationfound: (location) => {
-        console.log("location found:", location);
-      },
-      locationerror: (err) => {
-        console.log("location error:", err);
-      },
-      dragend: (event) => {
-        console.log("dragend :", event.dist);
-        map.locate();
-        console.log("update location :", map.locate().getCenter());
-      },
-      // moveend: async (e) => {
-      //   // if (!moveEndHandling) {
-      //   //   moveEndHandling = true;
-      //   //   await changuitoMap.onMoveEnd(map.getCenter(), props.cartsByBranches);
-      //   //   moveEndHandling = false;
-      // },
-      //MARKER bindPopup click mouseover -- REEMPLAZO DEL TOOLTIP
+      mousemove: (event) => {
+        if (centerChange) {
+          map.setView(mapCenter)
+          setCenterChange(false)
+        }
+      }
     });
     return null;
   }
+
+  function onMarkerDragEnd(event) {
+    var latlng = event.target.getLatLng();
+    console.log("dragend :", mapCenter)
+    console.log("dragend :", latlng.lat, latlng.lng)
+    setMapCenter(latlng)
+    setCenterChange(true)
+    props.updateLocation({ latitude: latlng.lat, longitude: latlng.lng })
+}
 
   return (
     <div id="map" className="Container Container-grey Result-size">
@@ -78,27 +76,18 @@ export default function BranchMap2(props) {
         <MapContainer
           className="information-result"
           center={mapCenter}
-          zoom={13}
-          maxZoom={19}
+          zoom={15}
+          maxZoom={20}
           scrollWheelZoom={true}
         >
           <TileLayer url="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
           <Circle center={mapCenter} radius={1000} color={COLORS.CIRCLE} />
           <Marker position={mapCenter} icon={branchIcons(COLORS.LOCATION_CENTER)} draggable
-          //   eventHandlers={
-          //     {dragend: (event) => {
-          //       console.log("dragend :", event.dist);
-          //       this.locate();
-          //       // setMapCenter(this.getLatLng())
-          //       console.log("update location :", this.locate().getCenter(), this.getLatLng());
-          //     }}
-          // }
+            eventHandlers={{ dragend: onMarkerDragEnd}}
           >
             <Tooltip>Usted esta aqui</Tooltip>
-            {/* <Popup></Popup> */}
           </Marker>
           {props.cartsByBranches.map((cart) => {
-            // const position = [51.505, -0.09]
             const [lng, lat] = cart.branch.location.coordinates;
             const position = { lat, lng };
 
@@ -108,19 +97,8 @@ export default function BranchMap2(props) {
                 position={position}
                 icon={cart.allProducts ? branchIcons(COLORS.COMPLETE_CART): branchIcons(COLORS.INCOMPLETE_CART) }
               >
-                <Popup
-                  // className={"leaflet-popup-content-wrapper-gray"}
-                  // content={branchPopUp(cart)}
-                  // eventHandlers={{
-                  //   click: () => {
-                  //     console.log('marker clicked')
-                  //   },
-                  // }}
-                >
+                <Popup>
                   <PopupContent branch={cart.branch} cartInfo={{total: cart.totalPrice, isFull: cart.allProducts}}></PopupContent>
-                  {/* <b>{cart.branch.comercioRazonSocial}</b><br />
-            <em>{cart.branch.comercioRazonSocial}</em><br />
-            Category: {cart.branch.comercioRazonSocial}<br /> */}
                 </Popup>
                 <Tooltip
                   content={`Distancia ${
@@ -133,7 +111,6 @@ export default function BranchMap2(props) {
           <MapHooks />
         </MapContainer>
       </div>
-      {/* <but  ton>CLICK</button> */}
     </div>
   );
 }
