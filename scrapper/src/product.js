@@ -85,7 +85,7 @@ export class ProductScrapper {
     }))
     const pricesCollection = this.db.collection(MONGO.COLLECTION.PRICES)
     const prices = mapped.map((x) => x.prices)
-    const result = await pricesCollection.insertMany(prices)
+    const result = await pricesCollection.insertMany(prices, {orderer: false})
     //console.log(`insertados ${prices.length} precios`)
 
     const productCollection = this.db.collection(MONGO.COLLECTION.PRODUCTS)
@@ -104,10 +104,11 @@ export class ProductScrapper {
     let throttling = false
     let scrapped = false
     let loops = 0;
-    while (!scrapped) {
+    let currentException = null
+    while (!scrapped && loops < 2) {
       try {
         if (throttling) {
-          this.ui.updateStatus(`Branch ${id} failed, waiting ${THROTTLE_SECS} secs to retry... (waited ${loops} times)`)
+          this.ui.updateStatus(`Branch ${id} failed, waiting ${THROTTLE_SECS} secs to retry... (waited ${loops}/2 times) Exception is ${currentException}`)
           this.ui.render();
           await new Promise(resolve => setTimeout(resolve, THROTTLE_SECS * 1000));
           loops++;
@@ -116,6 +117,7 @@ export class ProductScrapper {
         await this.saveProducts(branchProducts);
         scrapped = true;
       } catch (e) {
+        currentException = e;
         throttling = true;
       }
     }

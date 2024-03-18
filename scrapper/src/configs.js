@@ -9,8 +9,8 @@ export const SCRAP = {
 }
 
 export const MONGO = {
-  URL: process.env.MONGO_URI || 'mongodb://changuito:smart@172.23.0.2:27017/',
-  DB: process.env.DB || 'db-changuito',
+  URL: process.env.MONGO_URI, //|| 'mongodb://changuito:smart@172.23.0.2:27017/',
+  DB: process.env.DB, // || 'db-changuito',
   COLLECTION: {
     PRODUCTS: process.env.PRODUCTS || 'products',
     PRICES: process.env.PRICES || 'prices',

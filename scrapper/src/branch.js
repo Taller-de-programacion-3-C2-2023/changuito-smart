@@ -28,8 +28,7 @@ export class BranchScrapper {
       const branches = await this.getRemoteBranches()
       await branchCol.deleteMany({})
       console.log('Adding ', branches.length, ' branches')
-      await branchCol.insertMany(branches)
-      await branchCol.createIndex({ location: '2dsphere' })
+      await branchCol.insertMany(branches, {orderer: false})
       // TODO
       console.log('Removing extra branches')
       const pipeline = [
