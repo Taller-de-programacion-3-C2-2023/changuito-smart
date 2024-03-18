@@ -9,15 +9,20 @@ import ToastLocation from "./toastLocation";
 import ColumnedContent from "./columnedContents";
 import BranchPricesTable from "./changuiListPrices/cartBranches";
 import DateFilter from "./dateFilter";
-import BranchMap2 from "./priceMap/branchMap2"
+import BranchMap from "./priceMap/branchMap"
 import ViewMenu from "./viewMenu"
 
 const MAX_PRODUCTS_PER_CART = 5;
 
+function load(key, emptyValue = []) {
+  const item = window.sessionStorage.getItem(key);
+  return item != null ? JSON.parse(item) : emptyValue;
+}
+
 export default function Main(props) {
-  const [location, setLocation] = useState(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [cartProducts, setCartProducts] = useState([]);
+  const [location, setLocation] = useState(() => load('location', Config.defaultLocation));
+  const [activeIndex, setActiveIndex] = useState(() => load('activeIndex', 0));
+  const [cartProducts, setCartProducts] = useState(() => load('cartProducts', []));
   const [cartsByBranches, setCartsByBranches] = useState([]);
 
   const warnToast = useRef(null);
@@ -77,11 +82,14 @@ export default function Main(props) {
         setCartsByBranches(carts);
       }
       try {
+        window.sessionStorage.setItem('cartProducts', JSON.stringify(cartProducts));
+        // window.sessionStorage.setItem('activeIndex', activeIndex);
+        // window.sessionStorage.setItem('location', JSON.stringify(location));
         setCarts();
       } catch (err) {
         console.log("ERROR: Fetching error on BranchPricesTable");
       }
-  }, [cartProducts])
+  }, [cartProducts, location])
 
   function addSelectedProduct(productSelected) {
     if (cartProducts.length === MAX_PRODUCTS_PER_CART) {
@@ -130,7 +138,7 @@ export default function Main(props) {
   return (
     <>
       <Toast ref={warnToast} position="top-center"/> 
-      {!location ? <ToastLocation accept={() => setInitialLocation(true)} reject={() => setInitialLocation(false)}/> : null}
+      {location.default ? <ToastLocation accept={() => setInitialLocation(true)} reject={() => setInitialLocation(false)}/> : null}
       <div className="Main">
         <ViewMenu activeIndex={activeIndex} setActiveIndex={setActiveIndex}></ViewMenu>
         <ColumnedContent>
@@ -150,7 +158,7 @@ export default function Main(props) {
 
           <div className="Container-grey">
             {activeIndex === 0 && <BranchPricesTable cartsByBranches={cartsByBranches} cartProductsLength={cartProducts.length} />}
-            {activeIndex === 1 && <BranchMap2 cartsByBranches={cartsByBranches} cartProductsLength={cartProducts.length} location={location} />}
+            {activeIndex === 1 && <BranchMap cartsByBranches={cartsByBranches} cartProductsLength={cartProducts.length} location={location} updateLocation={setLocation} />}
             {activeIndex === 2 && <ProductPrices selectedProductList={cartProducts} filterDates={filterDates} />}
           </div>
         </ColumnedContent>

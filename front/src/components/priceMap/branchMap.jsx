@@ -1,72 +1,113 @@
 import "leaflet/dist/leaflet.css";
-import React, { useState, useEffect } from "react";
-import { MapContainer, TileLayer, useMap } from "react-leaflet";
-import Config from "../../config.js";
-import { ChanguitoMap } from "./changuitoMap.js";
-import "leaflet/dist/leaflet.css";
-import iconMarker from "leaflet/dist/images/marker-icon.png";
-import iconRetina from "leaflet/dist/images/marker-icon-2x.png";
-import iconShadow from "leaflet/dist/images/marker-shadow.png";
-import L from "leaflet";
+import "primereact/resources/primereact.css"; // core css
 
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: iconRetina,
-  iconUrl: iconMarker,
-  shadowUrl: iconShadow,
-});
+import React, { useState } from "react";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  Circle,
+  Tooltip,
+  useMapEvents,
+} from "react-leaflet";
+import  PopupContent from "./popupContent";
+import { Icon } from "leaflet";
 
-const changuitoMap = new ChanguitoMap();
-let moveEndHandling = false;
 
 export default function BranchMap(props) {
-  const [mapCenter, setMapCenter] = useState({ lat: props.location.latitude, lng:props.location.longitude});
+  const [mapCenter, setMapCenter] = useState({
+    lat: props.location.latitude,
+    lng: props.location.longitude,
+  });
+  const [centerChange, setCenterChange] = useState(false)
 
-  useEffect(
-    function effectFunction() {
-      async function updateMap() {
-        const idProducts = props.selectedProductList.map((p) => p.id);
-        changuitoMap.setProduct(idProducts);
-        await changuitoMap.onCenterChanged();
-        console.log("BranchMap   actualizando producto: ", idProducts);
-      }
-      try {
-        updateMap();
-      } catch (err) {
-        console.log("ERROR: Fetching error", err);
-      }
-    },
-    [props.selectedProductList, props.location]
-  );
+
+  const COLORS = {
+    LOCATION_CENTER: "grey",
+    CIRCLE: "grey",
+    INCOMPLETE_CART: "orange",
+    COMPLETE_CART: "green"
+  }
+
+  const branchIcons = (color = "blue")=> {
+    return new Icon({
+      iconUrl:
+    `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-${color}.png`,
+      shadowUrl:
+        "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41],
+    })
+  }
 
   function MapHooks() {
-    const map = useMap();
-    changuitoMap.setMap(map);
-    changuitoMap.locate(props.location);
-    map.invalidateSize();
-    map.on("moveend", async (e) => {
-      if (!moveEndHandling) {
-        moveEndHandling = true;
-        await changuitoMap.onMoveEnd(map.getCenter(), props.cartsByBranches);
-        moveEndHandling = false;
+    const map = useMapEvents({
+      click: () => {
+        console.log("location  map.locate():", map.getZoom());
+        map.locate();
+        map.setView(mapCenter, map.getZoom() * 1.1);
+      },
+      mousemove: (event) => {
+        if (centerChange) {
+          map.setView(mapCenter)
+          setCenterChange(false)
+        }
       }
     });
     return null;
   }
 
+  function onMarkerDragEnd(event) {
+    var latlng = event.target.getLatLng();
+    console.log("dragend :", mapCenter)
+    console.log("dragend :", latlng.lat, latlng.lng)
+    setMapCenter(latlng)
+    setCenterChange(true)
+    props.updateLocation({ latitude: latlng.lat, longitude: latlng.lng })
+}
+
   return (
     <div id="map" className="Container Container-grey Result-size">
-      <h3>
-        {`Resultados encontrados para los productos seleccionados`}
-      </h3>
+      <h3>{`Resultados encontrados para los productos seleccionados`}</h3>
       <div className="Container">
         <MapContainer
-          className="changuito-map"
+          className="information-result"
           center={mapCenter}
-          zoom={10}
-          maxZoom={19}
+          zoom={15}
+          maxZoom={20}
           scrollWheelZoom={true}
         >
           <TileLayer url="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+          <Circle center={mapCenter} radius={1000} color={COLORS.CIRCLE} />
+          <Marker position={mapCenter} icon={branchIcons(COLORS.LOCATION_CENTER)} draggable
+            eventHandlers={{ dragend: onMarkerDragEnd}}
+          >
+            <Tooltip>Usted esta aqui</Tooltip>
+          </Marker>
+          {props.cartsByBranches.map((cart) => {
+            const [lng, lat] = cart.branch.location.coordinates;
+            const position = { lat, lng };
+
+            return (
+              <Marker
+                key={cart.branch.id}
+                position={position}
+                icon={cart.allProducts ? branchIcons(COLORS.COMPLETE_CART): branchIcons(COLORS.INCOMPLETE_CART) }
+              >
+                <Popup>
+                  <PopupContent branch={cart.branch} cartInfo={{total: cart.totalPrice, isFull: cart.allProducts}}></PopupContent>
+                </Popup>
+                <Tooltip
+                  content={`Distancia ${
+                    Math.round(cart.branch.dist.calculated) / 1000
+                  } kms.`}
+                ></Tooltip>
+              </Marker>
+            );
+          })}
           <MapHooks />
         </MapContainer>
       </div>

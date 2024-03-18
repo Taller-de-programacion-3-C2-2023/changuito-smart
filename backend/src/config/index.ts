@@ -30,3 +30,4 @@ console.log('mongoConfig ', mongoConfig.url)
 export const paginationDefaults = { offset: 0, limit: 20 }
 
 export const locationDefault = { lat: -34.6109, lon: -58.3776 }
+export const maxBranchDistance = 1000  // match with circle in front map
