@@ -20,7 +20,7 @@ function load(key, emptyValue = []) {
 }
 
 export default function Main(props) {
-  const [location, setLocation] = useState(() => load('location', null));
+  const [location, setLocation] = useState(() => load('location', Config.defaultLocation));
   const [activeIndex, setActiveIndex] = useState(() => load('activeIndex', 0));
   const [cartProducts, setCartProducts] = useState(() => load('cartProducts', []));
   const [cartsByBranches, setCartsByBranches] = useState([]);
@@ -138,7 +138,7 @@ export default function Main(props) {
   return (
     <>
       <Toast ref={warnToast} position="top-center"/> 
-      {!location ? <ToastLocation accept={() => setInitialLocation(true)} reject={() => setInitialLocation(false)}/> : null}
+      {location.default ? <ToastLocation accept={() => setInitialLocation(true)} reject={() => setInitialLocation(false)}/> : null}
       <div className="Main">
         <ViewMenu activeIndex={activeIndex} setActiveIndex={setActiveIndex}></ViewMenu>
         <ColumnedContent>
