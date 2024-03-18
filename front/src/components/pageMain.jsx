@@ -14,10 +14,15 @@ import ViewMenu from "./viewMenu"
 
 const MAX_PRODUCTS_PER_CART = 5;
 
+function load(key, emptyValue = []) {
+  const item = window.sessionStorage.getItem(key);
+  return item != null ? JSON.parse(item) : emptyValue;
+}
+
 export default function Main(props) {
-  const [location, setLocation] = useState(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [cartProducts, setCartProducts] = useState([]);
+  const [location, setLocation] = useState(() => load('location', null));
+  const [activeIndex, setActiveIndex] = useState(() => load('activeIndex', 0));
+  const [cartProducts, setCartProducts] = useState(() => load('cartProducts', []));
   const [cartsByBranches, setCartsByBranches] = useState([]);
 
   const warnToast = useRef(null);
@@ -77,6 +82,9 @@ export default function Main(props) {
         setCartsByBranches(carts);
       }
       try {
+        window.sessionStorage.setItem('cartProducts', JSON.stringify(cartProducts));
+        // window.sessionStorage.setItem('activeIndex', activeIndex);
+        // window.sessionStorage.setItem('location', JSON.stringify(location));
         setCarts();
       } catch (err) {
         console.log("ERROR: Fetching error on BranchPricesTable");
