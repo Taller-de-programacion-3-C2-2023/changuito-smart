@@ -5,6 +5,7 @@ import {
   getPriceRecordsSchema,
   getProductsSchema,
   postBranchesSearchSchema,
+  getLastScrapDateSchema,
 } from './schemas'
 import handlers from '../handlers'
 
@@ -54,6 +55,7 @@ export const routes = async (app, _opts) => {
   app.route({
     url: '/lastScrapDate',
     method: 'GET',
+    schema: getLastScrapDateSchema,
     handler: getLastScrapDate,
   })
 }
