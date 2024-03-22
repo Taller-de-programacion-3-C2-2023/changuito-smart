@@ -112,6 +112,7 @@ export class ProductScrapper {
           await new Promise(resolve => setTimeout(resolve, THROTTLE_SECS * 1000));
           loops++;
         }
+        this.ui.updateStatus(`Scrapping branch`);
         const branchProducts = await this.getProductsForBranch(id);
         await this.saveProducts(branchProducts);
         scrapped = true;
@@ -147,6 +148,7 @@ export class ProductScrapper {
           this.ui.updateStatus(`Throttling ${THROTTLE_SECS} secs...`)
           await new Promise(resolve => setTimeout(resolve, THROTTLE_SECS * 1000));
         }
+        this.ui.updateStatus(`Downloading...`);
         const response = await axios.get(curUrl, headers);
         products = response.data.productos;
         this.ui.updateProductCounter(products.length);
