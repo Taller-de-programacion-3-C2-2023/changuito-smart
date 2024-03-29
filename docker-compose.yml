@@ -20,8 +20,11 @@ services:
     build:
       context: front
     ports:
-      - "8080:80"
+      - "80:80"
+      - "443:443"
     environment:
       REACT_APP_BACKEND_HOST: "backend:8080"
     depends_on:
       - backend
+    volumes:
+      - ./ssl:/opt/ssl:ro

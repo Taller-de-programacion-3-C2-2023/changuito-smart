@@ -8,6 +8,7 @@ export class MongoRepository {
   protected status: Promise<any>
 
   constructor(dbClient: any, dbName: string, collectionName: string) {
+    console.warn("DB NAME: ", dbName);
     this.dbClient = dbClient
     this.dbName = dbName
     this.collectionName = collectionName;
